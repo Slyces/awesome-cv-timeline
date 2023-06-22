@@ -1,0 +1,109 @@
+% TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Important note:
+% This template must be compiled with XeLaTeX, the below lines will ensure this
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt, a4paper]{resume}
+
+% Configure page margins with geometry
+\setlength{\sidemargin}{1.5cm}
+\geometry{left=\sidemargin, top=1.5cm, right=\sidemargin, bottom=2cm, footskip=.5cm}
+
+\fontdir[fonts/] % Specify the location of the included fonts
+
+% Color for highlights
+\definecolor{awesome}{HTML}{18678d}
+
+% Colors for text - uncomment and modify
+%\definecolor{darktext}{HTML}{414141}
+%\definecolor{text}{HTML}{414141}
+%\definecolor{graytext}{HTML}{414141}
+%\definecolor{lighttext}{HTML}{414141}
+
+\renewcommand{\headerSep}{\quad\textbar\quad} % If you would like to change the social information separator from a pipe (|) to something else
+
+%----------------------------------------------------------------------------------------
+%          Header Information
+%----------------------------------------------------------------------------------------
+
+\name{John}{Hammond}
+\address{NW1 6XE, London, UK}
+\mobile{(+44) 0 00 00 00 00}
+
+\email{john.hammond@gmail.com}
+\github{jhgit}
+\linkedin{john-hammond}
+
+\position{Software Engineer{\enskip\cdotp\enskip}Backend}
+%\quote{``Make the change that you want to see in the world."} % A quote or statement
+
+\makecvfooter{\today}{John Hammond~~~·~~~Resume}{\thepage} % Specify the letter footer with 3 arguments: (<left>, <center>, <right>), leave any of these blank if they are not needed
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\makecvheader % Print the header
+
+\begin{cvsummary}
+    %Software engineer with close to 4 years experience, mainly coding in Python. I care about code quality and writing readable, explicit code. I am currently experimenting with Rust on my free time to expand my skillset. I am looking for a role where I can be challenged and learn from industry experts.
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+\end{cvsummary}
+
+%\begin{center}
+    %%\hline{\linewidth}
+%\end{center}
+
+%----------------------------------------------------------------------------------------
+%	CV/RESUME CONTENT
+%	Each section is imported separately, open each file in turn to modify content
+%----------------------------------------------------------------------------------------
+
+\setlength{\headersmargin}{-0.2cm}
+\setlength{\leftcolumnwidth}{5cm}
+\setlength{\columnsmargin}{0.5\sidemargin}
+\setlength{\timelinemargin}{0.5cm}
+
+\timeline{D} % draw the timeline starting from section B
+
+\begin{textblock*}{\leftcolumnwidth}(0pt, \headersmargin)
+    \vspace{-2mm}
+    \input{sections/contact.tex}
+    \vspace{3mm}
+    \input{sections/skills.tex}
+    \vspace{3.5mm}
+    \input{sections/hobbies.tex}
+\end{textblock*}
+
+\begin{textblock*}
+    {\paperwidth - 2\sidemargin - \leftcolumnwidth - \columnsmargin - 2\timelinemargin}
+    (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, \headersmargin)
+    \vspace{-2mm}
+    \input{sections/experience.tex}
+    \input{sections/education.tex}
+    \input{sections/projects.tex}
+\end{textblock*}
+
+%----------------------------------------------------------------------------------------
+% Debug - Show lengths used in the document
+%\newcommand{\pos}[2]{([xshift=#1,yshift=-#2]current page.north west)}
+%\begin{tikzpicture}[
+    %remember picture,
+    %overlay,
+    %arrow/.style={stealth-stealth},
+%]
+    %\draw[arrow, thick] \pos{0pt}{6cm} -- \pos{\sidemargin}{6cm};
+    %\draw[arrow, thick] \pos{\leftcolumnwidth + \sidemargin}{6cm} -- \pos{\leftcolumnwidth + \sidemargin + \sidemargin}{6cm};
+    %\draw[arrow, thick] \pos{\leftcolumnwidth + \sidemargin}{6cm} -- \pos{\leftcolumnwidth + \sidemargin + \sidemargin}{6cm};
+%\end{tikzpicture}
+
+
+\end{document}
