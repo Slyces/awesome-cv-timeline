@@ -408,7 +408,7 @@
     \ifthenelse{\isundefined{\@position}}{}{\headerpositionstyle{\@position\\[\acvHeaderAfterPositionSkip]}}%
   \end{minipage}%
   \begin{minipage}[c]{\headerphotowidth}%
-    \ifthenelse{\equal{\@photoalign}{left}}{\raggedright\drawphoto}{}
+    \ifthenelse{\equal{\@photoalign}{right}}{\raggedright\drawphoto}{}
   \end{minipage}
 }
 
