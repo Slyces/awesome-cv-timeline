@@ -100,7 +100,25 @@
 \usetikzlibrary{calc}
 % Enable positioning relative to .. in tikz
 \usetikzlibrary{positioning}
-
+% Use multiple bibliographies and citations
+\RequirePackage[backend=biber,style=authortitle,maxbibnames=9,maxcitenames=4,sorting=ydnt,dashed=false]{biblatex}
+% Define custom bibliography style to minimize output
+\AtEveryBibitem{%
+  \clearfield{doi} % Remove DOI
+  \clearfield{url} % Remove URL
+  \clearfield{isbn} % Remove ISBN
+  \clearfield{issn} % Remove ISSN
+  \clearfield{eprint} % Remove eprint
+  \clearfield{note} % Remove note
+  \clearlist{publisher} % Remove publisher
+  \clearlist{location} % Remove location
+  \clearfield{month} % Remove month
+  \clearfield{language} % Remove language
+  \clearfield{pages} % Remove pages
+  \clearlist{language} % Remove pages
+  \clearfield{volume} % Remove pages
+  \clearfield{number} % Remove pages
+}
 
 %-------------------------------------------------------------------------------
 %                Configuration for directory locations
