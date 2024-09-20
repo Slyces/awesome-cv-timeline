@@ -442,8 +442,8 @@
 \def\cgituser{\headersocialstyle{\href{https://github.com/\@github}{\@github}}}
 \def\cgitproject#1{\headersocialstyle{\href{https://github.com/\@github/#1}{\scalebox{0.8}{\faGithub}}}}
 % Orcid
-\def\corcidicon{\headersocialstyle{\href{https://orcid.org/my-orcid?orcid=\@orcid}{\faOrcid}}}
-\def\corciduser{\headersocialstyle{\href{https://orcid.org/my-orcid?orcid=\@orcid}{\@orcid}}}
+\def\corcidicon{\headersocialstyle{\href{https://orcid.org/\@orcid}{\faOrcid}}}
+\def\corciduser{\headersocialstyle{\href{https://orcid.org/\@orcid}{\@orcid}}}
 % Linkedin
 \def\clinkedinicon{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\faLinkedin}}}
 \def\clinkedinuser{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\@linkedinuser}}}
