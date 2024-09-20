@@ -100,7 +100,25 @@
 \usetikzlibrary{calc}
 % Enable positioning relative to .. in tikz
 \usetikzlibrary{positioning}
-
+% Use multiple bibliographies and citations
+\RequirePackage[backend=biber,style=authortitle,maxbibnames=9,maxcitenames=4,sorting=ydnt,dashed=false]{biblatex}
+% Define custom bibliography style to minimize output
+\AtEveryBibitem{%
+  \clearfield{doi} % Remove DOI
+  \clearfield{url} % Remove URL
+  \clearfield{isbn} % Remove ISBN
+  \clearfield{issn} % Remove ISSN
+  \clearfield{eprint} % Remove eprint
+  \clearfield{note} % Remove note
+  \clearlist{publisher} % Remove publisher
+  \clearlist{location} % Remove location
+  \clearfield{month} % Remove month
+  \clearfield{language} % Remove language
+  \clearfield{pages} % Remove pages
+  \clearlist{language} % Remove pages
+  \clearfield{volume} % Remove pages
+  \clearfield{number} % Remove pages
+}
 
 %-------------------------------------------------------------------------------
 %                Configuration for directory locations
@@ -150,13 +168,24 @@
 \colorlet{graytext}{gray}
 \colorlet{lighttext}{lightgray}
 
+% Awesome colors
+\definecolor{awesome-emerald}{HTML}{00A388}
+\definecolor{awesome-skyblue}{HTML}{0395DE}
+\definecolor{awesome-darkblue}{HTML}{18678d}
+\definecolor{awesome-red}{HTML}{DC3522}
+\definecolor{awesome-pink}{HTML}{EF4089}
+\definecolor{awesome-orange}{HTML}{FF6138}
+\definecolor{awesome-nephritis}{HTML}{27AE60}
+\definecolor{awesome-concrete}{HTML}{95A5A6}
+\definecolor{awesome-darknight}{HTML}{131A28}
+
 % Boolean value to switch section color highlighting
 \newbool{acvSectionColorHighlight}
 \setbool{acvSectionColorHighlight}{true}
 
 % Awesome section color
-\def\@sectioncolor#1#2#3{%
-  \ifbool{acvSectionColorHighlight}{{\color{awesome}#1#2#3}}{#1#2#3}%
+\def\@sectioncolor#1{%
+  \ifbool{acvSectionColorHighlight}{{\color{awesome}#1}}{#1}%
 }
 
 
@@ -210,7 +239,7 @@
 %\newcommand*{\headersocialstyle}[1]{{\fontsize{6.8pt}{1em}\headerfont\color{text} #1}}
 \newcommand*{\headerquotestyle}[1]{{\fontsize{9pt}{1em}\bodyfont\itshape\color{darktext} #1}}
 \newcommand*{\footerstyle}[1]{{\fontsize{8pt}{1em}\footerfont\scshape\color{lighttext} #1}}
-\newcommand*{\sectionstyle}[1]{{\fontsize{16pt}{1em}\bodyfont\bfseries\scshape\color{text}\@sectioncolor #1}}
+\newcommand*{\sectionstyle}[1]{{\fontsize{16pt}{1em}\bodyfont\bfseries\scshape\color{text}\@sectioncolor{#1}}}
 \newcommand*{\subsectionstyle}[1]{{\fontsize{12pt}{1em}\bodyfont\scshape\textcolor{text}{#1}}}
 \newcommand*{\paragraphstyle}{\fontsize{12pt}{1em}\bodyfontlight\upshape\color{text}}
 
@@ -220,10 +249,10 @@
 
 % For elements of entry
 \newcommand*{\entrytitlestyle}[1]{{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
-\newcommand*{\entrypositionstyle}[1]{{\fontsize{8pt}{1em}\bodyfont\scshape\color{graytext} #1}}
+\newcommand*{\entrypositionstyle}[1]{{\fontsize{9pt}{1em}\bodyfont\scshape\color{graytext} #1}}
 \newcommand*{\entrydatestyle}[1]{{\fontsize{8pt}{1em}\bodyfontlight\slshape\color{graytext} #1}}
 \newcommand*{\entrylocationstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\slshape\color{awesome} #1}}
-\newcommand*{\descriptionstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text} #1}}
+\newcommand*{\descriptionstyle}[1]{{\fontsize{8pt}{1em}\bodyfontlight\upshape\color{text} #1}}
 
 % For elements of subentry
 \newcommand*{\subentrytitlestyle}[1]{{\fontsize{8pt}{1em}\bodyfont\mdseries\color{graytext} #1}}
@@ -243,6 +272,8 @@
 \newcommand*{\skillsetstyle}[1]{{\fontsize{7.5pt}{1em}\bodyfontlight\color{text} #1}}
 \newcommand*{\languagestyle}[1]{\sidebarstyle{#1}}
 
+% For bibliography
+\renewcommand*{\bibfont}{\descriptionstyle}
 %\newcommand*{\skillsetstyle}[1]{{\fontsize{7pt}{1em}\bodyfontlight\color{text} #1}}
 
 
@@ -290,6 +321,8 @@
 \newcommand*{\github}[1]{\def\@github{#1}}
 % Usage (optional): \gitlab{<gitlab-nick>}
 \newcommand*{\gitlab}[1]{\def\@gitlab{#1}}
+% Usage (optional): \orcid{orcid-id>}
+\newcommand*{\orcid}[1]{\def\@orcid{#1}}
 % Usage (optional): \stackoverflow{<so userid>}{<so username>}
 \newcommand*{\stackoverflow}[2]{\def\@stackoverflowid{#1}\def\@stackoverflowname{#2}}
 % Usage (optional): \linkedin{<linked-in-user>}
@@ -377,7 +410,7 @@
     \ifthenelse{\isundefined{\@position}}{}{\headerpositionstyle{\@position\\[\acvHeaderAfterPositionSkip]}}%
   \end{minipage}%
   \begin{minipage}[c]{\headerphotowidth}%
-    \ifthenelse{\equal{\@photoalign}{left}}{\raggedright\drawphoto}{}
+    \ifthenelse{\equal{\@photoalign}{right}}{\raggedright\drawphoto}{}
   \end{minipage}
 }
 
@@ -396,21 +429,29 @@
 %               Contacts
 %-------------------------------------------------------------------------------
 % Address
-\def\caddressicon{\headeraddressstyle{\icon{}}}
-\def\caddress{\headeraddressstyle{\@address}}
+% \def\caddressicon{\headeraddressstyle{\icon{}}}
+% \def\caddress{\headeraddressstyle{\@address}}
+% Source: https://github.com/Slyces/resume/commit/84c2f899773472caa878feca2c5ce77a6dffba22
+\def\caddressicon{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\icon{\faMapMarked*}}}}
+\def\caddress{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\@address}}}
 % Mobile
 \def\cmobileicon{\headersocialstyle{\faMobile}}
 \def\cmobile{\headersocialstyle{\@mobile}}
 % Github
 \def\cgiticon{\headersocialstyle{\href{https://github.com/\@github}{\faGithubSquare}}}
 \def\cgituser{\headersocialstyle{\href{https://github.com/\@github}{\@github}}}
+\def\cgitproject#1{\headersocialstyle{\href{https://github.com/\@github/#1}{\scalebox{0.8}{\faGithub}}}}
+% Orcid
+\def\corcidicon{\headersocialstyle{\href{https://orcid.org/\@orcid}{\faOrcid}}}
+\def\corciduser{\headersocialstyle{\href{https://orcid.org/\@orcid}{\@orcid}}}
 % Linkedin
 \def\clinkedinicon{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\faLinkedin}}}
 \def\clinkedinuser{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\@linkedinuser}}}
 % Email
 \def\cemailicon{\headersocialstyle{\href{mailto:\@email}{\faEnvelope}}}
 \def\cemail{\headersocialstyle{\href{mailto:\@email}{\@email}}}
-
+% Publications/link in-place
+\def\cpaperlink#1{\headersocialstyle{\href{#1}{\scalebox{0.8}{\faExternalLink*}}}}
 
 %-------------------------------------------------------------------------------
 %               Commands for dual-column and timeline
@@ -504,14 +545,14 @@
     ]
         % We don't know how many sections exist: iterate from the first letter
         % to some upper-bound (e.g. +10).
-        \foreach \s[count=\i from 0] in {#1,...,G}{
+        \foreach \s[count=\i from 0] in {#1}{
             % If the section exists, create a node `S0`
             \ifnum \zposy{\s0}>0
                 \node[section] (\s0) at \tikzpossection{\s0} {};
             \fi
             % We don't know how many entries exist
             % Iterate from the first index to some upper-bound (e.g. +10)
-            \foreach \e[remember=\e as \laste (initially 0)] in {1,...,10}{
+            \foreach \e[remember=\e as \laste (initially 0)] in {1,...,25}{
                 % If the position is non-null (exists), we create a node and
                 % draw from last node.
                 \ifnum \zposy{\s\e}>0
@@ -595,7 +636,9 @@
 }{ }
 
 % Define an environment for cventry
-\newenvironment{cventries}{%
+\newenvironment{cventries}[1][]{%
+% Make sure that you can set a title/separator for the current entry-list
+\raggedright\entrytitlestyle{#1}
   \vspace{\acvSectionContentTopSkip}
   \begin{center}
 }{%
@@ -618,7 +661,7 @@
   \vspace{\acvEntryTopSkip}
   \setlength\tabcolsep{0pt}
   \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 3.5cm} R{3.5cm}}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 4cm} R{4cm}}
     \ifempty{#2#3}
       {\entrypositionstyle{#1} & \entrydatestyle{#4} \\}
       {\entrytitlestyle{#2} & \entrylocationstyle{#3} \\
@@ -749,7 +792,6 @@
 % Define an entry of cv project
 % Usage: \cvproject{<subject>}{<duration>}{<description>}
 \newcommand*{\cvproject}[3]{%
-  \vspace{-2.0mm}
   \setlength\tabcolsep{0pt}
   \setlength{\extrarowheight}{0pt}
   \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 2.5cm} R{2.5cm}}
