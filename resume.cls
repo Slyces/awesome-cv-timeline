@@ -427,8 +427,8 @@
 %               Contacts
 %-------------------------------------------------------------------------------
 % Address
-\def\caddressicon{\headeraddressstyle{\icon{}}}
-\def\caddress{\headeraddressstyle{\@address}}
+\def\caddressicon{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\icon{\faMapMarked*}}}}
+\def\caddress{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\@address}}}
 % Mobile
 \def\cmobileicon{\headersocialstyle{\faMobile}}
 \def\cmobile{\headersocialstyle{\@mobile}}
