@@ -321,6 +321,8 @@
 \newcommand*{\github}[1]{\def\@github{#1}}
 % Usage (optional): \gitlab{<gitlab-nick>}
 \newcommand*{\gitlab}[1]{\def\@gitlab{#1}}
+% Usage (optional): \orcid{orcid-id>}
+\newcommand*{\orcid}[1]{\def\@orcid{#1}}
 % Usage (optional): \stackoverflow{<so userid>}{<so username>}
 \newcommand*{\stackoverflow}[2]{\def\@stackoverflowid{#1}\def\@stackoverflowname{#2}}
 % Usage (optional): \linkedin{<linked-in-user>}
@@ -436,6 +438,9 @@
 \def\cgiticon{\headersocialstyle{\href{https://github.com/\@github}{\faGithubSquare}}}
 \def\cgituser{\headersocialstyle{\href{https://github.com/\@github}{\@github}}}
 \def\cgitproject#1{\headersocialstyle{\href{https://github.com/\@github/#1}{\scalebox{0.8}{\faGithub}}}}
+% Orcid
+\def\corcidicon{\headersocialstyle{\href{https://orcid.org/my-orcid?orcid=\@orcid}{\faOrcid}}}
+\def\corciduser{\headersocialstyle{\href{https://orcid.org/my-orcid?orcid=\@orcid}{\@orcid}}}
 % Linkedin
 \def\clinkedinicon{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\faLinkedin}}}
 \def\clinkedinuser{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\@linkedinuser}}}
