@@ -435,13 +435,15 @@
 % Github
 \def\cgiticon{\headersocialstyle{\href{https://github.com/\@github}{\faGithubSquare}}}
 \def\cgituser{\headersocialstyle{\href{https://github.com/\@github}{\@github}}}
+\def\cgitproject#1{\headersocialstyle{\href{https://github.com/\@github/#1}{\scalebox{0.8}{\faGithub}}}}
 % Linkedin
 \def\clinkedinicon{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\faLinkedin}}}
 \def\clinkedinuser{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\@linkedinuser}}}
 % Email
 \def\cemailicon{\headersocialstyle{\href{mailto:\@email}{\faEnvelope}}}
 \def\cemail{\headersocialstyle{\href{mailto:\@email}{\@email}}}
-
+% Publications/link in-place
+\def\cpaperlink#1{\headersocialstyle{\href{#1}{\scalebox{0.8}{\faExternalLink*}}}}
 
 %-------------------------------------------------------------------------------
 %               Commands for dual-column and timeline
