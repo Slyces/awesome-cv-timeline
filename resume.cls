@@ -542,14 +542,14 @@
     ]
         % We don't know how many sections exist: iterate from the first letter
         % to some upper-bound (e.g. +10).
-        \foreach \s[count=\i from 0] in {#1,...,G}{
+        \foreach \s[count=\i from 0] in {#1}{
             % If the section exists, create a node `S0`
             \ifnum \zposy{\s0}>0
                 \node[section] (\s0) at \tikzpossection{\s0} {};
             \fi
             % We don't know how many entries exist
             % Iterate from the first index to some upper-bound (e.g. +10)
-            \foreach \e[remember=\e as \laste (initially 0)] in {1,...,10}{
+            \foreach \e[remember=\e as \laste (initially 0)] in {1,...,25}{
                 % If the position is non-null (exists), we create a node and
                 % draw from last node.
                 \ifnum \zposy{\s\e}>0
