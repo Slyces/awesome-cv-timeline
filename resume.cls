@@ -429,6 +429,9 @@
 %               Contacts
 %-------------------------------------------------------------------------------
 % Address
+% \def\caddressicon{\headeraddressstyle{\icon{}}}
+% \def\caddress{\headeraddressstyle{\@address}}
+% Source: https://github.com/Slyces/resume/commit/84c2f899773472caa878feca2c5ce77a6dffba22
 \def\caddressicon{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\icon{\faMapMarked*}}}}
 \def\caddress{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\@address}}}
 % Mobile
@@ -789,7 +792,6 @@
 % Define an entry of cv project
 % Usage: \cvproject{<subject>}{<duration>}{<description>}
 \newcommand*{\cvproject}[3]{%
-  % \vspace{-2.0mm}
   \setlength\tabcolsep{0pt}
   \setlength{\extrarowheight}{0pt}
   \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 2.5cm} R{2.5cm}}
