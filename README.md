@@ -22,9 +22,12 @@ xelatex resume.tex
 ```
 
 Here's an example of the output:
-![resume-1](https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-1.png)
-![resume-1](https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-2.png)
-![resume-1](https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-3.png)
+
+<div style="display: flex; justify-content: space-between;">
+  <img src="https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-1.png" alt="Page 1" width="200"/>
+  <img src="https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-2.png" alt="Page 2" width="200"/>
+  <img src="https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-3.png" alt="Page 3" width="200"/>
+</div>
 
 
 ## Can I use this template?
