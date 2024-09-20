@@ -24,9 +24,9 @@ xelatex resume.tex
 Here's an example of the output:
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-1.png" alt="Page 1" width="500"/>
-  <img src="https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-2.png" alt="Page 2" width="500"/>
-  <img src="https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-3.png" alt="Page 3" width="500"/>
+  <img src="https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-1.png" alt="Page 1" width="400"/>
+  <img src="https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-2.png" alt="Page 2" width="400"/>
+  <img src="https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-3.png" alt="Page 3" width="400"/>
 </div>
 
 
