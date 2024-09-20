@@ -14,8 +14,17 @@ This repository is a latex resume built on top of
 * Re-added colors of original [awesome-cv](https://github.com/posquit0/Awesome-CV) back to the class, appended the blue from [Resume](https://github.com/Slyces/resume) as `awesome-darkblue`.
 * Updated the example resume to demo the additions.
 
+## How to compile?
+```
+xelatex resume.tex
+biber resume
+xelatex resume.tex
+```
+
 Here's an example of the output:
-![resume-1](https://github.com/Slyces/resume/assets/22822015/532e6663-8bed-4b9f-bc7f-d74686b35d77)
+![resume-1](https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-1.png)
+![resume-1](https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-2.png)
+![resume-1](https://github.com/iroghair/aa-resume/blob/7ebbc2017e2436ecbaebf7a077e462a8f5b3dafb/images/pg-3.png)
 
 
 ## Can I use this template?
