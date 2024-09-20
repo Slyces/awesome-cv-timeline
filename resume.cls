@@ -633,7 +633,9 @@
 }{ }
 
 % Define an environment for cventry
-\newenvironment{cventries}{%
+\newenvironment{cventries}[1][]{%
+% Make sure that you can set a title/separator for the current entry-list
+\raggedright\entrytitlestyle{#1}
   \vspace{\acvSectionContentTopSkip}
   \begin{center}
 }{%
