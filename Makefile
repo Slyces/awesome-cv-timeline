@@ -1,36 +1,46 @@
-# You want latexmk to *always* run, because make does not have all the info.
-# Also, include non-file targets in .PHONY so they are run regardless of any
-# file of the given name existing.
-.PHONY: MyDoc.pdf all clean
+# Rules that should run regardless of files state
+.PHONY: all build clean
 
-# The first rule in a Makefile is the one executed by default ("make"). It
-# should always be the "all" rule, so that "make" and "make all" are identical.
-all: cv 
+all: build
 
-# CUSTOM BUILD RULES
+# Environment Variables
+BUILD_DIR ?= build/  ## Directory for build files (pdf, artifacts)
 
-# In case you didn't know, '$@' is a variable holding the name of the target,
-# and '$<' is a variable holding the (first) dependency of a rule.
-# "raw2tex" and "dat2tex" are just placeholders for whatever custom steps
-# you might have.
+# Latexmk Configuration
 
-%.tex: %.raw
-	./raw2tex $< > $@
+# -pdf tells latexmk to generate a PDF directly (instead of DVI).
+# -lualatex tells latexmk to use the `lualatex` backend.
+# -use-make tells latexmk to call make to generate missing files.
+# -jobname gives the name of the output pdf file
+# -outdir gives the folder for the output file and artifacts
+# -quiet suppresses logs
 
-%.tex: %.dat
-	./dat2tex $< > $@
+BUILD_OPTIONS := -pdf -quiet -lualatex -jobname=resume -use-make -outdir=$(BUILD_DIR)
 
-# MAIN LATEXMK RULE
+# Colours Variables - to use colour in 'make help' prints
+BLUE := \033[36m
+GREY := \033[37m
+RESET := \033[0m
+BOLD := \033[1m
 
-# -pdf tells latexmk to generate PDF directly (instead of DVI).
-# -pdflatex="" tells latexmk to call a specific backend with specific options.
-# -use-make tells latexmk to call make for generating missing files.
+build: resume.tex  ## Build the resume
+	latexmk $(BUILD_OPTIONS) -f resume.tex
 
-# -interaction=nonstopmode keeps the pdflatex backend from stopping at a
-# missing file reference and interactively asking you for an alternative.
+preview: resume.tex  ## Builds the resume with preview and reload options
+	# The -pvc option turns on the preview and reload mode
+	latexmk $(BUILD_OPTIONS) -pvc resume.tex
 
-cv: resume.tex
-	latexmk -quiet -lualatex -jobname=resume -use-make resume.tex
+clean:  ## Cleans up build files
+	latexmk -CA -outdir=$(BUILD_DIR) resume.tex
 
-clean:
-	latexmk -CA
+# Implements this pattern for autodocumenting Makefiles:
+# https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
+#
+# Picks up all comments that start with a ## and are at the end of a target definition line.
+.PHONY: help
+help:  ## Display command usage
+	@printf '$(BOLD)Commands$(RESET)\n'
+	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(BLUE)%-40s$(RESET) %s\n", $$1, $$2}'
+	@printf '$(BOLD)Environment Variables$(RESET)\n'
+	@grep -E '^[0-9a-zA-Z_]+ \?=.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = " (\\?=|##) "}; {printf "$(BLUE)%-20s$(GREY)%-20s$(RESET) %s\n", $$1, $$2,$$3}'
+
