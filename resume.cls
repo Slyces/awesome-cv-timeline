@@ -103,14 +103,6 @@
 
 
 %-------------------------------------------------------------------------------
-%                Configuration for directory locations
-%-------------------------------------------------------------------------------
-% Configure a directory location for fonts(default: 'fonts/')
-\newcommand*{\fontdir}[1][fonts/]{\def\@fontdir{#1}}
-\fontdir
-
-
-%-------------------------------------------------------------------------------
 %                Configuration for layout
 %-------------------------------------------------------------------------------
 %% Page Layout
@@ -165,7 +157,6 @@
 %-------------------------------------------------------------------------------
 % Set font for header (default is Roboto)
 \newfontfamily\headerfont[
-  Path=\@fontdir,
   UprightFont=*-Regular,
   ItalicFont=*-Italic,
   BoldFont=*-Bold,
@@ -173,15 +164,15 @@
 ]{Roboto}
 
 \newfontfamily\headerfontlight[
-  Path=\@fontdir,
   UprightFont=*-Thin,
   ItalicFont=*-ThinItalic,
   BoldFont=*-Medium,
   BoldItalicFont=*-MediumItalic,
 ]{Roboto}
 
+% Provides additional symbols, browse at
+% https://www.nerdfonts.com/cheat-sheet
 \newfontfamily{\symbolsfont}[
-  Path=\@fontdir,
   UprightFont=*-Regular,
   Extension=.ttf
 ]{SymbolsNerdFont}

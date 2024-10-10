@@ -20,9 +20,11 @@ BUILD_OPTIONS := -pdf -quiet -lualatex -jobname=resume -outdir=$(BUILD_DIR)
 # Targets
 # ------------------------------------------------------------------------------
 
+.PHONY: build
 build: $(LATEX_FILE)  ## Build the resume
 	latexmk $(BUILD_OPTIONS) -f $(LATEX_FILE)
 
+.PHONY: preview
 preview: $(LATEX_FILE)  ## Builds the resume with preview and reload options
 	# The -pvc option turns on the preview and reload mode
 	latexmk $(BUILD_OPTIONS) -pvc $(LATEX_FILE)
