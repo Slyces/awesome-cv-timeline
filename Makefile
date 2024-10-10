@@ -1,6 +1,4 @@
 # Rules that should run regardless of files state
-.PHONY: all build clean
-
 all: build
 
 # Environment Variables
@@ -15,7 +13,7 @@ BUILD_DIR ?= build/  ## Directory for build files (pdf, artifacts)
 # -outdir gives the folder for the output file and artifacts
 # -quiet suppresses logs
 
-BUILD_OPTIONS := -pdf -quiet -lualatex -jobname=resume -use-make -outdir=$(BUILD_DIR)
+BUILD_OPTIONS := -pdf -quiet -lualatex -jobname=resume -outdir=$(BUILD_DIR)
 
 # Colours Variables - to use colour in 'make help' prints
 BLUE := \033[36m
@@ -30,6 +28,7 @@ preview: resume.tex  ## Builds the resume with preview and reload options
 	# The -pvc option turns on the preview and reload mode
 	latexmk $(BUILD_OPTIONS) -pvc resume.tex
 
+.PHONY: clean
 clean:  ## Cleans up build files
 	latexmk -CA -outdir=$(BUILD_DIR) resume.tex
 
