@@ -1,41 +1,34 @@
-%% Start of file `resume.cls'.
-% Resume Class File
-%
-% Notes:
-% 1) This class file defines the structure and layout of the template file (cv.tex, resume.tex).
-%
 % Class license:
 % LPPL v1.3c (http://www.latex-project.org/lppl)
+% ==============================================================================
+% Resume class forked from awesome-cv (https://github.com/posquit0/Awesome-CV),
+% introducing a two-column layout and a « timeline » to present experiences,
+% education and projects.
 %
-
-%-------------------------------------------------------------------------------
-%                Identification
-%-------------------------------------------------------------------------------
+% This class is very long. It is split in multiple large sections by long
+% « ==== » separators.
 \ProvidesClass{resume}[Custom Resume]
 \NeedsTeXFormat{LaTeX2e}
 
 
-%-------------------------------------------------------------------------------
-%                Class options
-%
+% Class Options
+% --------------------------------------
 % (need to be done before the external package loading, for example because
 % we need \paperwidth, \paperheight and \@ptsize to be defined before loading
 % geometry and fancyhdr)
-%-------------------------------------------------------------------------------
+
 % Options for draft or final
 \DeclareOption{draft}{\setlength\overfullrule{5pt}}
 \DeclareOption{final}{\setlength\overfullrule{0pt}}
 % Inherit options of article
-\DeclareOption*{%
-  \PassOptionsToClass{\CurrentOption}{article}
-}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
 \LoadClass{article}
 
 
-%-------------------------------------------------------------------------------
-%                3rd party packages
-%-------------------------------------------------------------------------------
+% Packages
+% --------------------------------------
+
 % Needed to make fixed length table
 \RequirePackage{array}
 % Needed to handle list environment
@@ -101,60 +94,157 @@
 % Enable positioning relative to .. in tikz
 \usetikzlibrary{positioning}
 
+% Use multiple bibliographies and citations
+\RequirePackage[backend=biber,style=authortitle,maxbibnames=9,maxcitenames=4,sorting=ydnt,dashed=false]{biblatex}
 
-%-------------------------------------------------------------------------------
-%                Configuration for layout
-%-------------------------------------------------------------------------------
-%% Page Layout
+% Define custom bibliography style to minimize output
+\AtEveryBibitem{%
+  \clearfield{doi} % Remove DOI
+  \clearfield{url} % Remove URL
+  \clearfield{isbn} % Remove ISBN
+  \clearfield{issn} % Remove ISSN
+  \clearfield{eprint} % Remove eprint
+  \clearfield{note} % Remove note
+  \clearlist{publisher} % Remove publisher
+  \clearlist{location} % Remove location
+  \clearfield{month} % Remove month
+  \clearfield{language} % Remove language
+  \clearfield{pages} % Remove pages
+  \clearlist{language} % Remove pages
+  \clearfield{volume} % Remove pages
+  \clearfield{number} % Remove pages
+}
+
+% Configurable lengths (and their defaults) used in this class
+% --------------------------------------
+
+% Technical Detail
+% - - - - - - - - - - - - - - - - - - -
+% For vertical lengths, we can use a \newcommand{\<name>} as it's either used
+% inside a \vspace{\<name>} or as an argument for parskip \\[\<name>]
+%
+% For horizontal lengths, we use a \newlength and \setlength as it gives us
+% lengths that can be manipulated arithmically
+% (e.g. 1\textwidth - 2\iconswidth)
+
+% Header
+% --------------------------------------
+% Before header
+\newcommand{\headerbeforeskip}{0mm}
+
+% In between name & position
+\newcommand{\headerinterskip}{3mm}
+
+% After header
+\newcommand{\headerafterskip}{0mm}
+
+% Summary
+% --------------------------------------
+\newcommand{\summaryafterskip}{2mm}
+
+% Sections & Entries
+% --------------------------------------
+% After the section's title
+\newcommand{\sectiontitleskip}{1mm}
+% After the end of the whole section's content
+\newcommand{\sectionafterskip}{2mm}
+% Before section content (after titl
+\newcommand{\sectioncontentbeforeskip}{0mm}
+% Before entries
+\newcommand{\entrybeforeskip}{0mm}
+
+
+% Sidebar & Timeline
+% --------------------------------------
+% Create a length for the side margins (required for tikz)
+\newlength{\sidemargin}
+
+% Width of the left sidebar
+\newlength{\sidebarwidth}
+
+% Margin around the timeline (between sidebar and body)
+\newlength{\timelinemargin}
+
+% Width dedicated to date & location for cv entries
+\newlength{\datelocationwidth}
+\setlength{\datelocationwidth}{3cm}
+
+
+% Icons (contacts & hobbies)
+% --------------------------------------
+\newlength{\iconswidth}
+\setlength{\iconswidth}{14pt}
+
+
+% Layout
+% --------------------------------------
 % Configure page margins with geometry
 \newlength{\sidemargin}
 \geometry{left=2.0cm, top=1.5cm, right=2.0cm, bottom=2.0cm, footskip=.5cm}
 
-%% Header & Footer
 % Set offset to each header and footer
 \fancyhfoffset{0em}
+
 % Remove head rule
 \renewcommand{\headrulewidth}{0pt}
+
 % Clear all header & footer fields
 \fancyhf{}
+
 % Enable if you want to make header or footer using fancyhdr
 \pagestyle{fancy}
 
 
-%-------------------------------------------------------------------------------
-%                Configuration for colors
-%-------------------------------------------------------------------------------
+% Colors
+% --------------------------------------
+
 % Gray-scale colors
 \definecolor{white}{HTML}{FFFFFF}
 \definecolor{black}{HTML}{000000}
 \definecolor{darkgray}{HTML}{333333}
 \definecolor{gray}{HTML}{5D5D5D}
 \definecolor{lightgray}{HTML}{999999}
+
 % Basic colors
 \definecolor{green}{HTML}{C2E15F}
 \definecolor{orange}{HTML}{FDA333}
 \definecolor{purple}{HTML}{D3A4F9}
 \definecolor{red}{HTML}{FB4485}
 \definecolor{blue}{HTML}{6CE0F1}
+
 % Text colors
 \definecolor{darktext}{HTML}{414141}
 \colorlet{text}{darkgray}
 \colorlet{graytext}{gray}
 \colorlet{lighttext}{lightgray}
 
-% Boolean value to switch section color highlighting
-\newbool{acvSectionColorHighlight}
-\setbool{acvSectionColorHighlight}{true}
+% Icons colors
+\definecolor{darkicon}{HTML}{505050}
 
-% Awesome section color
-\def\@sectioncolor#1#2#3{%
-  \ifbool{acvSectionColorHighlight}{{\color{awesome}#1#2#3}}{#1#2#3}%
+% Awesome colors
+\definecolor{awesome-emerald}{HTML}{00A388}
+\definecolor{awesome-skyblue}{HTML}{0395DE}
+\definecolor{awesome-darkblue}{HTML}{18678d}
+\definecolor{awesome-red}{HTML}{DC3522}
+\definecolor{awesome-pink}{HTML}{EF4089}
+\definecolor{awesome-orange}{HTML}{FF6138}
+\definecolor{awesome-nephritis}{HTML}{27AE60}
+\definecolor{awesome-concrete}{HTML}{95A5A6}
+\definecolor{awesome-darknight}{HTML}{131A28}
+
+% Boolean value to switch section color highlighting
+\newbool{sectioncolorhighlight}
+\setbool{sectioncolorhighlight}{true}
+
+% Show sections tiles in `awesome` color if `highlightSections` is true
+\def\@sectioncolor#1{%
+    \ifbool{sectioncolorhighlight}{{\color{awesome}#1}}{{\color{text}#1}}%
 }
 
 
-%-------------------------------------------------------------------------------
-%                Configuration for fonts
-%-------------------------------------------------------------------------------
+% Fonts configuration
+% --------------------------------------
+
 % Set font for header (default is Roboto)
 \newfontfamily\headerfont[
   UprightFont=*-Regular,
@@ -177,69 +267,20 @@
   Extension=.ttf
 ]{SymbolsNerdFont}
 
+% Aliases to contextualise fonts in differents parts of the resume
 \newcommand*{\footerfont}{\sourcesanspro}
 \newcommand*{\bodyfont}{\sourcesanspro}
 \newcommand*{\bodyfontlight}{\sourcesansprolight}
-
 \newcommand*{\icon}[1]{{\symbolsfont #1}}
 
-%-------------------------------------------------------------------------------
-%                Configuration for styles
-%-------------------------------------------------------------------------------
-% Configure styles for each CV elements
+% Personal information inputs
+% --------------------------------------
+% Configure the different information that the writer needs to input in the
+% main file (resume.tex)
+%
+% Defines commands that will store some input information into a variable that
+% can later be used in elements (see the `elements` section)
 
-% For elements of the sidebar
-\newcommand*{\sidebarstyle}[1]{{\fontsize{9.5pt}{1em}\bodyfontlight\color{text} #1}}
-\newcommand*{\sidebariconstyle}[1]{{\fontsize{8pt}{1em}\bodyfont\color{text} #1}}
-
-
-% For fundamental structures
-\newcommand*{\headerfirstnamestyle}[1]{{\fontsize{32pt}{1em}\headerfontlight\color{graytext} #1}}
-\newcommand*{\headerlastnamestyle}[1]{{\fontsize{32pt}{1em}\headerfont\bfseries\color{text} #1}}
-\newcommand*{\headerpositionstyle}[1]{{\fontsize{17pt}{1em}\bodyfont\scshape\color{awesome} #1}}
-%\newcommand*{\headeraddressstyle}[1]{{\fontsize{8pt}{1em}\headerfont\itshape\color{lighttext} #1}}
-%\newcommand*{\headersocialstyle}[1]{{\fontsize{6.8pt}{1em}\headerfont\color{text} #1}}
-\newcommand*{\headerquotestyle}[1]{{\fontsize{9pt}{1em}\bodyfont\itshape\color{darktext} #1}}
-\newcommand*{\footerstyle}[1]{{\fontsize{8pt}{1em}\footerfont\scshape\color{lighttext} #1}}
-\newcommand*{\sectionstyle}[1]{{\fontsize{16pt}{1em}\bodyfont\bfseries\scshape\color{text}\@sectioncolor #1}}
-\newcommand*{\subsectionstyle}[1]{{\fontsize{12pt}{1em}\bodyfont\scshape\textcolor{text}{#1}}}
-\newcommand*{\paragraphstyle}{\fontsize{12pt}{1em}\bodyfontlight\upshape\color{text}}
-
-\newcommand*{\headersocialstyle}[1]{{\fontsize{8pt}{1em}\bodyfontlight\color{text} #1}}
-\newcommand*{\headeraddressstyle}[1]{\headersocialstyle{#1}}
-\newcommand*{\headericonstyle}[1]{\sidebariconstyle{#1}}
-
-% For elements of entry
-\newcommand*{\entrytitlestyle}[1]{{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
-\newcommand*{\entrypositionstyle}[1]{{\fontsize{8pt}{1em}\bodyfont\scshape\color{graytext} #1}}
-\newcommand*{\entrydatestyle}[1]{{\fontsize{8pt}{1em}\bodyfontlight\slshape\color{graytext} #1}}
-\newcommand*{\entrylocationstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\slshape\color{awesome} #1}}
-\newcommand*{\descriptionstyle}[1]{{\fontsize{9pt}{1em}\bodyfontlight\upshape\color{text} #1}}
-
-% For elements of subentry
-\newcommand*{\subentrytitlestyle}[1]{{\fontsize{8pt}{1em}\bodyfont\mdseries\color{graytext} #1}}
-\newcommand*{\subentrypositionstyle}[1]{{\fontsize{7pt}{1em}\bodyfont\scshape\color{graytext} #1}}
-\newcommand*{\subentrydatestyle}[1]{{\fontsize{7pt}{1em}\bodyfontlight\slshape\color{graytext} #1}}
-\newcommand*{\subentrylocationstyle}[1]{{\fontsize{7pt}{1em}\bodyfontlight\slshape\color{awesome} #1}}
-\newcommand*{\subdescriptionstyle}[1]{{\fontsize{8pt}{1em}\bodyfontlight\upshape\color{text} #1}}
-
-% For elements of hobbies
-%\newcommand*{\hobbyiconstyle}[1]{{\fontsize{11.5pt}{1em}\bodyfont\color{text} #1}}
-%\newcommand*{\hobbiesstyle}[1]{{\fontsize{9.5pt}{1em}\bodyfont\color{text} #1}}
-\newcommand*{\hobbyiconstyle}[1]{\headericonstyle{#1}}
-\newcommand*{\hobbiesstyle}[1]{\headersocialstyle{#1}}
-
-% For elements of skill
-\newcommand*{\skilltypestyle}[1]{{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
-\newcommand*{\skillsetstyle}[1]{{\fontsize{7.5pt}{1em}\bodyfontlight\color{text} #1}}
-\newcommand*{\languagestyle}[1]{\sidebarstyle{#1}}
-
-%\newcommand*{\skillsetstyle}[1]{{\fontsize{7pt}{1em}\bodyfontlight\color{text} #1}}
-
-
-%-------------------------------------------------------------------------------
-%                Commands for personal information
-%-------------------------------------------------------------------------------
 % Define photo ID
 % Usage: \photo[circle|rectangle,edge|noedge,left|right]{<path-to-image>}
 \newcommand{\photo}[2][circle,edge,left]{%
@@ -253,11 +294,15 @@
       {\let\@photoalign\tmp}{}%
   }%
 }
+
+% Set the default image configuration
 \def\@photoshape{circle}
 \def\@photoedge{edge}
 \def\@photoalign{left}
 
-% Define writer's name
+% Headers Information
+% ----------------------------
+
 % Usage: \name{<firstname>}{<lastname>}
 \newcommand*{\name}[2]{\def\@firstname{#1}\def\@lastname{#2}}
 % Usage: \firstname{<firstname>}
@@ -265,16 +310,19 @@
 % Usage: \lastname{<lastname>}
 \newcommand*{\lastname}[1]{\def\@lastname{#1}}
 % Usage: \familyname{<familyname>}
-\newcommand*{\familyname}[1]{\def\@lastname{#1}}
-\def\@familyname{\@lastname}
-% Usage: \address{<address>}
-\newcommand*{\address}[1]{\def\@address{#1}}
+\newcommand*{\familyname}[1]{\def\@lastname{#1}}\def\@familyname{\@lastname}
 % Usage: \position{<position>}
 \newcommand*{\position}[1]{\def\@position{#1}}
-% Usage (optional): \mobile{<mobile number>}
-\newcommand*{\mobile}[1]{\def\@mobile{#1}}
+
+% Contacts Information
+% ----------------------------
+
+% Usage: \address{<address>}
+\newcommand*{\address}[1]{\def\@address{#1}}
 % Usage (optional): \email{<email adress>}
 \newcommand*{\email}[1]{\def\@email{#1}}
+% Usage (optional): \mobile{<mobile number>}
+\newcommand*{\mobile}[1]{\def\@mobile{#1}}
 % Usage (optional): \homepage{<url>}
 \newcommand*{\homepage}[1]{\def\@homepage{#1}}
 % Usage (optional): \github{<github-nick>}
@@ -287,10 +335,107 @@
 \newcommand*{\linkedin}[1]{\def\@linkedinuser{#1}}
 % Usage (optional): \twitter{<twitter handle>}
 \newcommand*{\twitter}[1]{\def\@twitter{#1}}
+% Usage (optional): \instagram{<instagram handle>}
+\newcommand*{\instagram}[1]{\def\@instagram{#1}}
+
 % Usage (optional): \extrainfo{<extra informations>}
 \newcommand*{\extrainfo}[1]{\def\@extrainfo{#1}}
 % Usage (optional): \quote{<quote>}
 \renewcommand*{\quote}[1]{\def\@quote{#1}}
+
+% Contacts Information
+% -------------------------------------
+% Configure how the different elements in the resume *look*
+
+% Defines commands for the style of each named element of the resume, this
+% includes:
+% - font size    (e.g. 32pt)
+% - font weight  (e.g. light)
+% - colour
+
+% Each command follows the pattern:
+% > `\<element>style` e.g. `\headerpositionstyle`
+
+% Header
+% --------------------------------------
+% First name & last name have different styles
+\newcommand*{\headerfirstnamestyle}[1]
+    {{\fontsize{32pt}{1em}\headerfontlight\color{graytext} #1}}
+\newcommand*{\headerlastnamestyle}[1]
+    {{\fontsize{32pt}{1em}\headerfont\bfseries\color{text} #1}}
+% Job position is below the name
+\newcommand*{\headerpositionstyle}[1]
+    {{\fontsize{17pt}{1em}\bodyfont\scshape\color{awesome} #1}}
+% Quote is an optional short sentence
+\newcommand*{\headerquotestyle}[1]
+    {{\fontsize{9pt}{1em}\bodyfont\itshape\color{darktext} #1}}
+
+% Summary
+% --------------------------------------
+% Short paragraph about you
+\newcommand*{\summarystyle}
+    {\fontsize{10pt}{1em}\bodyfontlight\upshape\color{text}}
+
+% Contact
+% --------------------------------------
+\newcommand*{\headersocialstyle}[1]
+    {{\fontsize{8pt}{1em}\bodyfontlight\color{text} #1}}
+\newcommand*{\headeraddressstyle}[1]{\headersocialstyle{#1}}
+\newcommand*{\headericonstyle}[1]{\sidebariconstyle{#1}}
+
+% Footer
+% --------------------------------------
+\newcommand*{\footerstyle}[1]
+    {{\fontsize{8pt}{1em}\footerfont\scshape\color{lighttext} #1}}
+
+% Generic Section (Experience, Education, ...)
+% --------------------------------------
+\newcommand*{\sectionstyle}[1]
+    {{\fontsize{16pt}{1em}\bodyfont\bfseries\scshape\@sectioncolor #1}}
+\newcommand*{\subsectionstyle}[1]
+    {{\fontsize{12pt}{1em}\bodyfont\scshape\textcolor{text}{#1}}}
+\newcommand*{\paragraphstyle}
+    {\fontsize{12pt}{1em}\bodyfontlight\upshape\color{text}}
+
+% Entry elements
+% --------------------------------------
+\newcommand*{\entrytitlestyle}[1]
+    {{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
+\newcommand*{\entrypositionstyle}[1]
+    {{\fontsize{9pt}{1em}\bodyfont\scshape\color{graytext} #1}}
+\newcommand*{\entrydatestyle}[1]
+    {{\fontsize{8pt}{1em}\bodyfontlight\slshape\color{graytext} #1}}
+\newcommand*{\entrylocationstyle}[1]
+    {{\fontsize{9pt}{1em}\bodyfontlight\slshape\color{awesome} #1}}
+\newcommand*{\descriptionstyle}[1]
+    {{\fontsize{8pt}{1em}\bodyfontlight\upshape\color{text} #1}}
+
+% Subentry elements
+% --------------------------------------
+\newcommand*{\subentrytitlestyle}[1]
+    {{\fontsize{8pt}{1em}\bodyfont\mdseries\color{graytext} #1}}
+\newcommand*{\subentrypositionstyle}[1]
+    {{\fontsize{7pt}{1em}\bodyfont\scshape\color{graytext} #1}}
+\newcommand*{\subentrydatestyle}[1]
+    {{\fontsize{7pt}{1em}\bodyfontlight\slshape\color{graytext} #1}}
+\newcommand*{\subentrylocationstyle}[1]
+    {{\fontsize{7pt}{1em}\bodyfontlight\slshape\color{awesome} #1}}
+\newcommand*{\subdescriptionstyle}[1]
+    {{\fontsize{8pt}{1em}\bodyfontlight\upshape\color{text} #1}}
+
+% Hobbies
+% --------------------------------------
+\newcommand*{\hobbyiconstyle}[1]{\headericonstyle{#1}}
+\newcommand*{\hobbiesstyle}[1]{\headersocialstyle{#1}}
+
+% Skills
+% --------------------------------------
+\newcommand*{\skilltypestyle}[1]
+    {{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
+\newcommand*{\skillsetstyle}[1]
+    {{\fontsize{7.5pt}{1em}\bodyfontlight\color{text} #1}}
+\newcommand*{\languagestyle}[1]
+    {{\fontsize{9.5pt}{1em}\bodyfontlight\color{text} #1}}
 
 
 %-------------------------------------------------------------------------------
