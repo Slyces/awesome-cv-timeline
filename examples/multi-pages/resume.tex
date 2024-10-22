@@ -1,0 +1,135 @@
+% TEX program = xelatex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Important note:
+% This template must be compiled with XeLaTeX, the below lines will ensure this
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt, a4paper]{resume}
+
+% Configure page margins with geometry
+\setlength{\sidemargin}{1.5cm}
+\geometry{left=\sidemargin, top=1.5cm, right=\sidemargin, bottom=2cm, footskip=.5cm}
+
+\fontdir[../../fonts/] % Specify the location of the included fonts
+
+% Color for highlights
+\colorlet{awesome}{awesome-emerald}
+
+% Colors for text - uncomment and modify
+%\definecolor{darktext}{HTML}{414141}
+%\definecolor{text}{HTML}{414141}
+%\definecolor{graytext}{HTML}{414141}
+%\definecolor{lighttext}{HTML}{414141}
+
+% Add multiple .bib files
+\addbibresource{bibliographies/papers-chapters.bib}
+\addbibresource{bibliographies/patents.bib}
+\addbibresource{bibliographies/PhD-EngD-theses.bib}
+\addbibresource{bibliographies/proceedings.bib}
+
+\renewcommand{\headerSep}{\quad\textbar\quad} % If you would like to change the social information separator from a pipe (|) to something else
+
+%----------------------------------------------------------------------------------------
+%          Header Information
+%----------------------------------------------------------------------------------------
+
+\name{Jack}{Sparrow}
+\address{Port Tortuga, Caribbean Sea}
+\mobile{+1-800-SEABOUND}
+\email{pirateking@blackpearl.com}
+\github{jspgit}
+\linkedin{jacksparrow}
+\orcid{1701-0420-1720-0800}
+
+\position{Captain{\enskip\cdotp\enskip}Pirate{\enskip\cdotp\enskip}Coach}
+\photo{jack.jpg}
+% \quote{``Make the change that you want to see in the world."} % A quote or statement
+
+\makecvfooter{\today}{Jack Sparrow~~~·~~~Resume}{\thepage} % Specify the letter footer with 3 arguments: (<left>, <center>, <right>), leave any of these blank if they are not needed
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\makecvheader % Print the header
+
+\begin{cvsummary}
+    To continue a life of adventure, sailing the high seas in search of treasure, rum, and the occasional encounter with supernatural forces, while maintaining the reputation as the most cunning and unpredictable pirate in the Caribbean.
+\end{cvsummary}
+
+%\begin{center}
+    %%\hline{\linewidth}
+%\end{center}
+
+%----------------------------------------------------------------------------------------
+%	CV/RESUME CONTENT
+%	Each section is imported separately, open each file in turn to modify content
+%----------------------------------------------------------------------------------------
+
+\setlength{\headersmargin}{-0.2cm}
+\setlength{\leftcolumnwidth}{5cm}
+\setlength{\columnsmargin}{0.5\sidemargin}
+\setlength{\timelinemargin}{0.5cm}
+
+% \timeline{D} % draw the timeline starting from section B
+\timeline{D,E}
+
+\begin{textblock*}{\leftcolumnwidth}(0pt, \headersmargin)
+    \vspace{-2mm}
+    \input{sections/contact.tex}
+    \vspace{3mm}
+    \input{sections/skills.tex}
+    \vspace{3.5mm}
+    \input{sections/hobbies.tex}
+\end{textblock*}
+
+\begin{textblock*}
+    {\paperwidth - 2\sidemargin - \leftcolumnwidth - \columnsmargin - 2\timelinemargin}
+    (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, \headersmargin)
+    \vspace{-2mm}
+    \input{sections/experience.tex}
+    \input{sections/education.tex}
+\end{textblock*}
+
+\newpage
+\setlength{\leftcolumnwidth}{-\columnsmargin}
+
+\timeline{F,G} % H,I,J,L,...
+
+\begin{textblock*}
+    {\paperwidth - 2\sidemargin - \leftcolumnwidth - \columnsmargin - 2\timelinemargin}
+    (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, \headersmargin)
+    \vspace{-2mm}
+    \input{sections/projects.tex}
+    \input{sections/selected-publications.tex}
+\end{textblock*}
+
+\newpage
+\setlength{\leftcolumnwidth}{-\timelinemargin}
+
+\newgeometry{left=3\columnsmargin, top=1.5cm, right=\sidemargin, bottom=2cm, footskip=.5cm}
+% \timeline{H}
+\input{sections/publications.tex}
+
+%----------------------------------------------------------------------------------------
+% Debug - Show lengths used in the document
+%\newcommand{\pos}[2]{([xshift=#1,yshift=-#2]current page.north west)}
+%\begin{tikzpicture}[
+    %remember picture,
+    %overlay,
+    %arrow/.style={stealth-stealth},
+%]
+    %\draw[arrow, thick] \pos{0pt}{6cm} -- \pos{\sidemargin}{6cm};
+    %\draw[arrow, thick] \pos{\leftcolumnwidth + \sidemargin}{6cm} -- \pos{\leftcolumnwidth + \sidemargin + \sidemargin}{6cm};
+    %\draw[arrow, thick] \pos{\leftcolumnwidth + \sidemargin}{6cm} -- \pos{\leftcolumnwidth + \sidemargin + \sidemargin}{6cm};
+%\end{tikzpicture}
+
+
+\end{document}
