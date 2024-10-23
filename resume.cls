@@ -116,7 +116,7 @@
 }
 
 % Configurable lengths (and their defaults) used in this class
-% --------------------------------------
+% ----------------------------------------------------------
 
 % Technical Detail
 % - - - - - - - - - - - - - - - - - - -
@@ -167,6 +167,8 @@
 
 % TDB
 \newlength{\headersmargin}
+\newlength{\leftcolumnwidth}
+\newlength{\columnsmargin}
 
 % Width dedicated to date & location for cv entries
 \newlength{\datelocationwidth}
@@ -198,7 +200,8 @@
 
 
 % Colors
-% --------------------------------------
+% ----------------------------------------------------------
+
 
 % Gray-scale colors
 \definecolor{white}{HTML}{FFFFFF}
@@ -220,9 +223,6 @@
 \colorlet{graytext}{gray}
 \colorlet{lighttext}{lightgray}
 
-% Icons colors
-\definecolor{darkicon}{HTML}{505050}
-
 % Awesome colors
 \definecolor{awesome-emerald}{HTML}{00A388}
 \definecolor{awesome-skyblue}{HTML}{0395DE}
@@ -233,6 +233,10 @@
 \definecolor{awesome-nephritis}{HTML}{27AE60}
 \definecolor{awesome-concrete}{HTML}{95A5A6}
 \definecolor{awesome-darknight}{HTML}{131A28}
+
+% Icons colors
+%\definecolor{iconcolor}{HTML}{505050}
+\colorlet{iconcolor}{awesome-concrete}
 
 % Boolean value to switch section color highlighting
 \newbool{sectioncolorhighlight}
@@ -245,7 +249,7 @@
 
 
 % Fonts configuration
-% --------------------------------------
+% ----------------------------------------------------------
 
 % Set font for header (default is Roboto)
 \newfontfamily\headerfont[
@@ -273,10 +277,10 @@
 \newcommand*{\footerfont}{\sourcesanspro}
 \newcommand*{\bodyfont}{\sourcesanspro}
 \newcommand*{\bodyfontlight}{\sourcesansprolight}
-\newcommand*{\icon}[1]{{\symbolsfont #1}}
+\newcommand*{\icon}[1]{{\symbolsfont\color{iconcolor} #1}}
 
 % Personal information inputs
-% --------------------------------------
+% ----------------------------------------------------------
 % Configure the different information that the writer needs to input in the
 % main file (resume.tex)
 %
@@ -347,8 +351,8 @@
 % Usage (optional): \quote{<quote>}
 \renewcommand*{\quote}[1]{\def\@quote{#1}}
 
-% Contacts Information
-% -------------------------------------
+% Fonts & Styles
+% ---------------------------------------------------------
 % Configure how the different elements in the resume *look*
 
 % Defines commands for the style of each named element of the resume, this
@@ -380,17 +384,39 @@
 \newcommand*{\summarystyle}
     {\fontsize{10pt}{1em}\bodyfontlight\upshape\color{text}}
 
-% Contact
-% --------------------------------------
-\newcommand*{\headersocialstyle}[1]
-    {{\fontsize{8pt}{1em}\bodyfontlight\color{text} #1}}
-\newcommand*{\headeraddressstyle}[1]{\headersocialstyle{#1}}
-\newcommand*{\headericonstyle}[1]{{\fontsize{8pt}{1em}\bodyfont\color{text} #1}}
-
 % Footer
 % --------------------------------------
 \newcommand*{\footerstyle}[1]
     {{\fontsize{8pt}{1em}\footerfont\scshape\color{lighttext} #1}}
+
+% Sidebar
+% --------------------------------------
+% Default style for most of the text & icons on the left column for
+% consistency. Some more specific areas will be defined, but set as an
+% alias to this by default.
+\newcommand*{\sidebarstyle}[1]
+    {{\fontsize{8pt}{1em}\bodyfontlight\color{text} #1}}
+\newcommand*{\sidebariconstyle}[1]{{\fontsize{8pt}{1em}\bodyfont #1}}
+
+% Contact
+% --------------------------------------
+\newcommand*{\contactstyle}[1]{\sidebarstyle{#1}}
+\newcommand*{\contacticonstyle}[1]{\sidebariconstyle{#1}}
+
+
+% Hobbies
+% --------------------------------------
+\newcommand*{\hobbiesstyle}[1]{\sidebarstyle{#1}}
+\newcommand*{\hobbiesiconstyle}[1]{\sidebariconstyle{#1}}
+
+% Skills
+% --------------------------------------
+\newcommand*{\skilltypestyle}[1]
+    {{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
+\newcommand*{\skillsetstyle}[1]
+    {{\fontsize{7.5pt}{1em}\bodyfontlight\color{text} #1}}
+\newcommand*{\languagestyle}[1]
+    {{\fontsize{9.5pt}{1em}\bodyfontlight\color{text} #1}}
 
 % Generic Section (Experience, Education, ...)
 % --------------------------------------
@@ -427,24 +453,187 @@
 \newcommand*{\subdescriptionstyle}[1]
     {{\fontsize{8pt}{1em}\bodyfontlight\upshape\color{text} #1}}
 
-% Hobbies
-% --------------------------------------
-\newcommand*{\hobbyiconstyle}[1]{\headericonstyle{#1}}
-\newcommand*{\hobbiesstyle}[1]{\headersocialstyle{#1}}
-
-% Skills
-% --------------------------------------
-\newcommand*{\skilltypestyle}[1]
-    {{\fontsize{10pt}{1em}\bodyfont\bfseries\color{darktext} #1}}
-\newcommand*{\skillsetstyle}[1]
-    {{\fontsize{7.5pt}{1em}\bodyfontlight\color{text} #1}}
-\newcommand*{\languagestyle}[1]
-    {{\fontsize{9.5pt}{1em}\bodyfontlight\color{text} #1}}
-
 % Bibliography
 % --------------------------------------
 \renewcommand*{\bibfont}{\descriptionstyle}
 
+
+% Elements
+% ---------------------------------------------------------
+% Defines commands to include the different elements.
+%
+% Reminder of the overall layout of the resume (by default)
+% ┌───────────────────────────────────────────────────────────┐
+% │   ┌─────────┐                                             │
+% │   │         │  ┌────────────────────────────────┐         │
+% │   │ picture │  │          Name Surname          │         │
+% │   │         │  └────────────────────────────────┘         │
+% │   └─────────┘      job title - specialisation             │
+% │   ┌───────────────────────────────────────────────────┐   │
+% │   │ Summary                                           │   │
+% │   └───────────────────────────────────────────────────┘   │
+% │                                                           │
+% │   Contact          ● Experience                           │
+% │                    │                                      │
+% │   ϟ     ~~~~~~~~   ○ Company                    Location  │
+% │   ϟ       ~~~~~~   │ Job Title              start - stop  │
+% │   ϟ     ~~~~~~~~   │ • ~~~~~~~~~~~~~                      │
+% │   ϟ ~~~~ ϟ ~~~~    │  • ~~~~~~~~~                         │
+% │                    │  • ~~~~~~~                           │
+% │   Skills           │ • ~~~~~~~~~~~~~~                     │
+% │                    │                                      │
+% │   Group 1          ○ Company                    Location  │
+% │   ▢▢▢▢ ▢▢▢▢ ▢▢▢▢   │ Job Title              start - stop  │
+% │   Group 2          │ • ~~~~~~~~~~~~~                      │
+% │   ▢▢▢▢ ▢▢▢▢ ▢▢▢▢   │  • ~~~~~~~~~                         │
+% │                    │  • ~~~~~~~                           │
+% │   Hobbies          │ • ~~~~~~~~~~~~~~                     │
+% │   ϟ     ~~~~~~~~   │  • ~~~~~~~~                          │
+% │   ϟ      ~~~~~~~   │  • ~~~~~~~~~~                        │
+% │                    ● Education                            │
+% │   Languages        │                                      │
+% │   ϟ     ~~~~~~~~   ○ Degree Name                Location  │
+% │   ϟ      ~~~~~~~   │ University             start - stop  │
+% │                    │                                      │
+% │                                                           │
+% │                                                           │
+% │                        footer                       date  │
+% └───────────────────────────────────────────────────────────┘
+
+% Utilities Commands
+% --------------------------------------
+% Align elements in tabular tables
+\newcolumntype{L}[1]
+    {>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]
+    {>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]
+    {>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+% Draw horizontal line with specific thickness
+\def\vhrulefill#1
+    {\leavevmode\leaders\hrule\@depth-4pt\@height4.9pt\hfill \kern\z@}
+
+% Execute conditional statements by checking empty string
+\newcommand*{\ifempty}[3]{\ifthenelse{\isempty{#1}}{#2}{#3}}
+
+
+% Header & Picture
+% --------------------------------------
+% │ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - │
+% │   ┌─────────┐                                             │
+% │   │         │  ┌────────────────────────────────┐         │
+% │   │ picture │  │          Name Surname          │         │
+% │   │         │  └────────────────────────────────┘         │
+% │   └─────────┘      job title - specialisation             │
+% │ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - │
+% Provides a single command to create the header: \makecvheader
+
+% Command for the separation between name & surname
+\newcommand{\headernamedelim}{\space}
+
+% Define a header for CV
+% Usage: \makecvheader{<align-char>}
+\newcommand*{\makecvheader}[1][C]{%
+    % Draw the photo (if defined)
+    \newcommand*{\drawphoto}{%
+        \ifthenelse{\isundefined{\@photo}}{}{%
+            % Figure out the dimensions depending on edge type (circle / edge)
+            \newlength{\photodim}
+            \ifthenelse{\equal{\@photoshape}{circle}}%
+                {\setlength{\photodim}{1.3cm}}%
+                {\setlength{\photodim}{1.8cm}}%
+
+            % Add a border for the `edge` shape
+            \ifthenelse{\equal{\@photoedge}{edge}}%
+                {\def\@photoborder{darkgray}}%
+                {\def\@photoborder{none}}%
+
+            % Draw the photo using tikz
+            \begin{tikzpicture}%
+                \node[
+                    \@photoshape,
+                    draw=\@photoborder,
+                    line width=0.3mm,
+                    inner sep=\photodim,
+                    fill overzoom image=\@photo
+                ] () {};
+            \end{tikzpicture}
+        }%
+    }
+
+    % Figure out the width for text vs. photo
+    \newlength{\headertextwidth}
+    \newlength{\headerphotowidth}
+    \ifthenelse{\isundefined{\@photo}}{
+        % No photo => 100% for text
+        \setlength{\headertextwidth}{\textwidth}
+        \setlength{\headerphotowidth}{0cm}
+    }{%
+        % Photo => ~ 25% for photo, 75% for text
+        \setlength{\headertextwidth}{0.76\textwidth}
+        \setlength{\headerphotowidth}{0.24\textwidth}
+    }%
+
+    % Create minipages to show the photo & text side-by-side
+
+    % Minipage for left-side photo
+    \begin{minipage}[c]{\headerphotowidth}%
+        \ifthenelse{\equal{\@photoalign}{left}}{\raggedright\drawphoto}{}
+    \end{minipage}%
+    % Minipage for text
+    \begin{minipage}[c]{\headertextwidth}
+        % Handle text alignment (options: L | C | R)
+        \ifthenelse{\equal{#1}{L}}{
+            % Argument #1 <align-char> is 'L'
+            \raggedright
+        }{\ifthenelse{\equal{#1}{R}}{
+            % Argument #1 <align-char> is 'R'
+            \raggedleft
+        }{
+            % Argument #1 <align-char> is anything else (includes empty)
+            \centering
+        }}
+
+        % Text with 'firstname <sep> lastname'
+        \headerfirstnamestyle{\@firstname}%
+        \headerlastnamestyle{{}\acvHeaderNameDelim\@lastname}%
+        \\[\acvHeaderAfterNameSkip]%
+
+        % Position text (if defined)
+        \ifthenelse{\isundefined{\@position}}{
+            % No position => end of header skip
+        }{
+            % Position => inter-skip, position, after skip
+            \headerpositionstyle{\@position\\[\acvHeaderAfterPositionSkip]}
+        }%
+    \end{minipage}%
+    % Minipage for right-side photo
+    \begin{minipage}[c]{\headerphotowidth}%
+        \ifthenelse{\equal{\@photoalign}{right}}{\raggedright\drawphoto}{}
+    \end{minipage}
+}
+
+% Summary
+% --------------------------------------
+% The summary is just a paragraph in between the header and the main body of
+% the resume (sidebar on the left and timeline of events on the right)
+% │ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - │
+% │   ┌───────────────────────────────────────────────────┐   │
+% │   │ Summary                                           │   │
+% │   └───────────────────────────────────────────────────┘   │
+% │ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - │
+\newenvironment{cvsummary}{\summarystyle}{\vspace{\summaryafterskip}}
+
+% Sidebar vs. Body
+% --------------------------------------
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+% │   Contact          ● Experience                           │
+% │                    │                                      │
+% │   ϟ     ~~~~~~~~   ○ Job Title                  Location  │
+% │   ϟ       ~~~~~~   │ Company                start - stop  │
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+%        sidebar                       body
 
 %-------------------------------------------------------------------------------
 %                Commands for extra
@@ -465,100 +654,94 @@
 \newcommand{\acvSectionTopSkip}{0pt}
 \newcommand{\acvSectionContentTopSkip}{1.5mm}
 
-
-%-------------------------------------------------------------------------------
-%                Commands for utilities
-%-------------------------------------------------------------------------------
-% Use to align an element of tabular table
-\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-
-% Use to draw horizontal line with specific thickness
-\def\vhrulefill#1{\leavevmode\leaders\hrule\@depth-4pt\@height4.9pt\hfill \kern\z@}
-%\def\vhrulefill#1{\leavevmode\leaders\hrule\@height#1\hfill \kern\z@}
-
-% Use to execute conditional statements by checking empty string
-\newcommand*{\ifempty}[3]{\ifthenelse{\isempty{#1}}{#2}{#3}}
-
-
-%-------------------------------------------------------------------------------
-%               Header
-%-------------------------------------------------------------------------------
-% Define a header for CV
-% Usage: \makecvheader
-\newcommand*{\makecvheader}[1][C]{%
-  \newcommand*{\drawphoto}{%
-    \ifthenelse{\isundefined{\@photo}}{}{%
-      \newlength{\photodim}
-      \ifthenelse{\equal{\@photoshape}{circle}}%
-        {\setlength{\photodim}{1.3cm}}%
-        {\setlength{\photodim}{1.8cm}}%
-      \ifthenelse{\equal{\@photoedge}{edge}}%
-        {\def\@photoborder{darkgray}}%
-        {\def\@photoborder{none}}%
-      \begin{tikzpicture}%
-        \node[\@photoshape, draw=\@photoborder, line width=0.3mm, inner sep=\photodim, fill overzoom image=\@photo] () {};
-      \end{tikzpicture}
-    }%
-  }
-  \newlength{\headertextwidth}
-  \newlength{\headerphotowidth}
-  \ifthenelse{\isundefined{\@photo}}{
-    \setlength{\headertextwidth}{\textwidth}
-    \setlength{\headerphotowidth}{0cm}
-  }{%
-    \setlength{\headertextwidth}{0.76\textwidth}
-    \setlength{\headerphotowidth}{0.24\textwidth}
-  }%
-  \begin{minipage}[c]{\headerphotowidth}%
-    \ifthenelse{\equal{\@photoalign}{left}}{\raggedright\drawphoto}{}
-  \end{minipage}
-  \begin{minipage}[c]{\headertextwidth}
-    \ifthenelse{\equal{#1}{L}}{\raggedright}{\ifthenelse{\equal{#1}{R}}{\raggedleft}{\centering}}
-    \headerfirstnamestyle{\@firstname}\headerlastnamestyle{{}\acvHeaderNameDelim\@lastname}%
-    \\[\acvHeaderAfterNameSkip]%
-    \ifthenelse{\isundefined{\@position}}{}{\headerpositionstyle{\@position\\[\acvHeaderAfterPositionSkip]}}%
-  \end{minipage}%
-  \begin{minipage}[c]{\headerphotowidth}%
-    \ifthenelse{\equal{\@photoalign}{right}}{\raggedright\drawphoto}{}
-  \end{minipage}
+% Icons Table
+% --------------------------------------
+% Table meant to be used on the left column of the layout, with the left
+% column containing icons and the right column text that fit in one line
+% (multi-line doesn't look very good).
+%
+% It's also possible to use it with a short text on the left column but you
+% might need to create a simple table environment yourself to play with the
+% dimensions.
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+% │   Contact          ●                                      │
+% │                    │                                      │
+% │   ϟ     ~~~~~~~~   ○                                      │
+% │   ϟ       ~~~~~~   │                                      │
+% │   ϟ     ~~~~~~~~   │                                      │
+% │   ϟ ~~~~ ϟ ~~~~~   │                                      │
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+% There are 2 main usage:
+% - One entry per row for long elements (e.g. address, phone)
+% - Two entries per row for short elements (e.g. git, twitter)
+%
+% We define the contacts elements as 2 set of functionalities:
+% - An environment for the contacts table:
+%   - \begin{contactstable} ... \end{contactstable}
+% - Commands for each element's icon and text
+%   - \c<element>  e.g. \caddress
+%   - \c<element>icon  e.g. \caddressicon
+\newenvironment{iconstable}{
+    % Remove spacing around cell contents -> equivalent to spamming @{}
+    \setlength{\tabcolsep}{2pt}
+    \begin{tabular*}{\leftcolumnwidth}{ | c | R{\leftcolumnwidth - 4\tabcolsep - \iconswidth} |}
+    \hline
+}{
+    \hline
+    \end{tabular*}
 }
 
+% Contacts items
+% --------------------------------------
+% The contacts table is versatile, as many elements can be integrated or not
+% depending on the author.
+%
+% We define below elements and their corresponding icons. The pattern is the
+% following:
+% - \c<element> e.g. \caddress -> \contactstyle{\@<element>}
+% - \c<element>icon e.g. \caddressicon -> \contacticonstyle{\@<element>}
+%
+% When possible, a clickable link to the element is provided with
+% \href{<link>}{\@<element>} e.g. google maps for the address.
 
-%-------------------------------------------------------------------------------
-%               Side Bar Lengths Definitions
-%-------------------------------------------------------------------------------
-% User Defined
-\newlength{\leftcolumnwidth}
-\newlength{\columnsmargin}
-
-%-------------------------------------------------------------------------------
-%               Contacts
-%-------------------------------------------------------------------------------
+% Elements text & icons
+% - - - - - - - - - - - - - - - - - - -
 % Address
-% Alternative icon for address: \icon{}
-\def\caddressicon{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\icon{\faMapMarked*}}}}
-\def\caddress{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\@address}}}
-% Mobile
-\def\cmobileicon{\headersocialstyle{\faMobile}}
-\def\cmobile{\headersocialstyle{\@mobile}}
-% Github
-\def\cgiticon{\headersocialstyle{\href{https://github.com/\@github}{\faGithubSquare}}}
-\def\cgituser{\headersocialstyle{\href{https://github.com/\@github}{\@github}}}
-\def\cgitproject#1{\headersocialstyle{\href{https://github.com/\@github/#1}{\scalebox{0.8}{\faGithub}}}}
-% Linkedin
-\def\clinkedinicon{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\faLinkedin}}}
-\def\clinkedinuser{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\@linkedinuser}}}
-% Email
-\def\cemailicon{\headersocialstyle{\href{mailto:\@email}{\faEnvelope}}}
-\def\cemail{\headersocialstyle{\href{mailto:\@email}{\@email}}}
-% Orcid
-\def\corcidicon{\headersocialstyle{\href{https://orcid.org/\@orcid}{\faOrcid}}}
-\def\corciduser{\headersocialstyle{\href{https://orcid.org/\@orcid}{\@orcid}}}
-% Publications/link in-place
-\def\cpaperlink#1{\headersocialstyle{\href{#1}{\scalebox{0.8}{\faExternalLink*}}}}
+\def\caddress{\contactstyle{%
+    \href{https://maps.google.com/?\@address}{\@address}}}
+\def\caddressicon{\contacticonstyle{% alternative icon: `\icon{}`
+    \href{https://maps.google.com/?\@address}{\icon{\faMapMarked*}}}}
 
+% Mobile
+\def\cmobile{\contactstyle{\@mobile}}
+\def\cmobileicon{\contacticonstyle{\icon{\faMobile}}}
+
+% Github
+\def\cgituser{\contactstyle{
+    \href{https://github.com/\@github}{\@github}}}
+\def\cgiticon{\contacticonstyle{
+    \href{https://github.com/\@github}{\icon{\faGithubSquare}}}}
+\def\cgitproject#1{\contacticonstyle{
+    \href{https://github.com/\@github/#1}{\scalebox{0.8}{\icon{\faGithub}}}}}
+
+% Linkedin
+\def\clinkedinuser{\contactstyle{%
+    \href{https://www.linkedin.com/in/\@linkedinuser}{\@linkedinuser}}}
+\def\clinkedinicon{\contacticonstyle{%
+    \href{https://www.linkedin.com/in/\@linkedinuser}{\icon{\faLinkedin}}}}
+
+% Email
+\def\cemail{\contactstyle{\href{mailto:\@email}{\@email}}}
+\def\cemailicon{\contacticonstyle{\href{mailto:\@email}{\icon{\faEnvelope}}}}
+
+% Orcid
+\def\corciduser{\contactstyle{\href{https://orcid.org/\@orcid}{\@orcid}}}
+\def\corcidicon{\contacticonstyle{
+    \href{https://orcid.org/\@orcid}{\icon{\faOrcid}}}}
+
+% In-place link (any website, publication, ...)
+\def\cpaperlink#1{\contacticonstyle{
+    \href{#1}{\scalebox{0.8}{\icon{\faExternalLink*}}}}}
 
 %-------------------------------------------------------------------------------
 %               Commands for dual-column and timeline
@@ -734,11 +917,6 @@
   \par
   \vspace{2mm}
 }
-
-% Define an about me summary
-\newenvironment{cvsummary}{%
-  \fontsize{10pt}{1em}\bodyfontlight\upshape\color{text}
-}{ }
 
 % Define an environment for cventry
 \newenvironment{cventries}[1][]{%
