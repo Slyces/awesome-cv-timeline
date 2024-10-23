@@ -120,13 +120,6 @@
   \clearfield{number} % Remove pages
 }
 
-%-------------------------------------------------------------------------------
-%                Configuration for directory locations
-%-------------------------------------------------------------------------------
-% Configure a directory location for fonts(default: 'fonts/')
-\newcommand*{\fontdir}[1][fonts/]{\def\@fontdir{#1}}
-\fontdir
-
 
 %-------------------------------------------------------------------------------
 %                Configuration for layout
@@ -196,7 +189,6 @@
 %-------------------------------------------------------------------------------
 % Set font for header (default is Roboto)
 \newfontfamily\headerfont[
-  Path=\@fontdir,
   UprightFont=*-Regular,
   ItalicFont=*-Italic,
   BoldFont=*-Bold,
@@ -204,7 +196,6 @@
 ]{Roboto}
 
 \newfontfamily\headerfontlight[
-  Path=\@fontdir,
   UprightFont=*-Thin,
   ItalicFont=*-ThinItalic,
   BoldFont=*-Medium,
@@ -212,7 +203,6 @@
 ]{Roboto}
 
 \newfontfamily{\symbolsfont}[
-  Path=\@fontdir,
   UprightFont=*-Regular,
   Extension=.ttf
 ]{SymbolsNerdFont}
@@ -443,9 +433,6 @@
 %               Contacts
 %-------------------------------------------------------------------------------
 % Address
-% \def\caddressicon{\headeraddressstyle{\icon{}}}
-% \def\caddress{\headeraddressstyle{\@address}}
-% Source: https://github.com/Slyces/resume/commit/84c2f899773472caa878feca2c5ce77a6dffba22
 \def\caddressicon{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\icon{\faMapMarked*}}}}
 \def\caddress{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\@address}}}
 % Mobile

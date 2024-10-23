@@ -165,6 +165,9 @@
 % Margin around the timeline (between sidebar and body)
 \newlength{\timelinemargin}
 
+% TDB
+\newlength{\headersmargin}
+
 % Width dedicated to date & location for cv entries
 \newlength{\datelocationwidth}
 \setlength{\datelocationwidth}{3cm}
@@ -173,13 +176,12 @@
 % Icons (contacts & hobbies)
 % --------------------------------------
 \newlength{\iconswidth}
-\setlength{\iconswidth}{14pt}
+\setlength{\iconswidth}{9pt}
 
 
 % Layout
 % --------------------------------------
 % Configure page margins with geometry
-\newlength{\sidemargin}
 \geometry{left=2.0cm, top=1.5cm, right=2.0cm, bottom=2.0cm, footskip=.5cm}
 
 % Set offset to each header and footer
@@ -238,7 +240,7 @@
 
 % Show sections tiles in `awesome` color if `highlightSections` is true
 \def\@sectioncolor#1{%
-    \ifbool{sectioncolorhighlight}{{\color{awesome}#1}}{{\color{text}#1}}%
+    \ifbool{sectioncolorhighlight}{\color{awesome}#1}{\color{text}#1}%
 }
 
 
@@ -337,6 +339,8 @@
 \newcommand*{\twitter}[1]{\def\@twitter{#1}}
 % Usage (optional): \instagram{<instagram handle>}
 \newcommand*{\instagram}[1]{\def\@instagram{#1}}
+% Usage (optional): \orcid{orcid-id>}
+\newcommand*{\orcid}[1]{\def\@orcid{#1}}
 
 % Usage (optional): \extrainfo{<extra informations>}
 \newcommand*{\extrainfo}[1]{\def\@extrainfo{#1}}
@@ -381,7 +385,7 @@
 \newcommand*{\headersocialstyle}[1]
     {{\fontsize{8pt}{1em}\bodyfontlight\color{text} #1}}
 \newcommand*{\headeraddressstyle}[1]{\headersocialstyle{#1}}
-\newcommand*{\headericonstyle}[1]{\sidebariconstyle{#1}}
+\newcommand*{\headericonstyle}[1]{{\fontsize{8pt}{1em}\bodyfont\color{text} #1}}
 
 % Footer
 % --------------------------------------
@@ -436,6 +440,10 @@
     {{\fontsize{7.5pt}{1em}\bodyfontlight\color{text} #1}}
 \newcommand*{\languagestyle}[1]
     {{\fontsize{9.5pt}{1em}\bodyfontlight\color{text} #1}}
+
+% Bibliography
+% --------------------------------------
+\renewcommand*{\bibfont}{\descriptionstyle}
 
 
 %-------------------------------------------------------------------------------
@@ -513,7 +521,7 @@
     \ifthenelse{\isundefined{\@position}}{}{\headerpositionstyle{\@position\\[\acvHeaderAfterPositionSkip]}}%
   \end{minipage}%
   \begin{minipage}[c]{\headerphotowidth}%
-    \ifthenelse{\equal{\@photoalign}{left}}{\raggedright\drawphoto}{}
+    \ifthenelse{\equal{\@photoalign}{right}}{\raggedright\drawphoto}{}
   \end{minipage}
 }
 
@@ -525,34 +533,36 @@
 \newlength{\leftcolumnwidth}
 \newlength{\columnsmargin}
 
-\newlength{\iconswidth}
-\setlength{\iconswidth}{9pt}
-
 %-------------------------------------------------------------------------------
 %               Contacts
 %-------------------------------------------------------------------------------
 % Address
-\def\caddressicon{\headeraddressstyle{\icon{}}}
-\def\caddress{\headeraddressstyle{\@address}}
+% Alternative icon for address: \icon{}
+\def\caddressicon{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\icon{\faMapMarked*}}}}
+\def\caddress{\headeraddressstyle{\href{https://maps.google.com/?\@address}{\@address}}}
 % Mobile
 \def\cmobileicon{\headersocialstyle{\faMobile}}
 \def\cmobile{\headersocialstyle{\@mobile}}
 % Github
 \def\cgiticon{\headersocialstyle{\href{https://github.com/\@github}{\faGithubSquare}}}
 \def\cgituser{\headersocialstyle{\href{https://github.com/\@github}{\@github}}}
+\def\cgitproject#1{\headersocialstyle{\href{https://github.com/\@github/#1}{\scalebox{0.8}{\faGithub}}}}
 % Linkedin
 \def\clinkedinicon{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\faLinkedin}}}
 \def\clinkedinuser{\headersocialstyle{\href{https://www.linkedin.com/in/\@linkedinuser}{\@linkedinuser}}}
 % Email
 \def\cemailicon{\headersocialstyle{\href{mailto:\@email}{\faEnvelope}}}
 \def\cemail{\headersocialstyle{\href{mailto:\@email}{\@email}}}
+% Orcid
+\def\corcidicon{\headersocialstyle{\href{https://orcid.org/\@orcid}{\faOrcid}}}
+\def\corciduser{\headersocialstyle{\href{https://orcid.org/\@orcid}{\@orcid}}}
+% Publications/link in-place
+\def\cpaperlink#1{\headersocialstyle{\href{#1}{\scalebox{0.8}{\faExternalLink*}}}}
 
 
 %-------------------------------------------------------------------------------
 %               Commands for dual-column and timeline
 %-------------------------------------------------------------------------------
-\newlength{\headersmargin}
-\newlength{\timelinemargin}
 
 % This counter counts major nodes (sections)
 \newcounter{sections}
@@ -640,14 +650,14 @@
     ]
         % We don't know how many sections exist: iterate from the first letter
         % to some upper-bound (e.g. +10).
-        \foreach \s[count=\i from 0] in {#1,...,G}{
+        \foreach \s[count=\i from 0] in {#1}{
             % If the section exists, create a node `S0`
             \ifnum \zposy{\s0}>0
                 \node[section] (\s0) at \tikzpossection{\s0} {};
             \fi
             % We don't know how many entries exist
             % Iterate from the first index to some upper-bound (e.g. +10)
-            \foreach \e[remember=\e as \laste (initially 0)] in {1,...,10}{
+            \foreach \e[remember=\e as \laste (initially 0)] in {1,...,25}{
                 % If the position is non-null (exists), we create a node and
                 % draw from last node.
                 \ifnum \zposy{\s\e}>0
@@ -731,7 +741,9 @@
 }{ }
 
 % Define an environment for cventry
-\newenvironment{cventries}{%
+\newenvironment{cventries}[1][]{%
+  % Make sure that you can set a title/separator for the current entry-list
+  \raggedright\entrytitlestyle{#1}
   \vspace{\acvSectionContentTopSkip}
   \begin{center}
 }{%
@@ -885,7 +897,6 @@
 % Define an entry of cv project
 % Usage: \cvproject{<subject>}{<duration>}{<description>}
 \newcommand*{\cvproject}[3]{%
-  \vspace{-2.0mm}
   \setlength\tabcolsep{0pt}
   \setlength{\extrarowheight}{0pt}
   \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 2.5cm} R{2.5cm}}
