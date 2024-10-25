@@ -181,6 +181,16 @@
 \setlength{\iconswidth}{9pt}
 
 
+% Debug commands
+% --------------------------------------
+% Create a boolean to enable/disable debug mode
+\newbool{debugmode}
+\setbool{debugmode}{false}
+
+% Create commands for conditional code depending on debug mode
+\newcommand{\debug}[2]{\ifbool{debugmode}{#1}{#2}}
+
+
 % Layout
 % --------------------------------------
 % Configure page margins with geometry
@@ -654,15 +664,12 @@
 \newcommand{\acvSectionTopSkip}{0pt}
 \newcommand{\acvSectionContentTopSkip}{1.5mm}
 
-% Icons Table
+% Sidebar Table
 % --------------------------------------
 % Table meant to be used on the left column of the layout, with the left
-% column containing icons and the right column text that fit in one line
-% (multi-line doesn't look very good).
+% column containing icons (or short text) and the right column text that fit in
+% one line (multi-line doesn't look very good).
 %
-% It's also possible to use it with a short text on the left column but you
-% might need to create a simple table environment yourself to play with the
-% dimensions.
 % │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
 % │   Contact          ●                                      │
 % │                    │                                      │
@@ -671,25 +678,28 @@
 % │   ϟ     ~~~~~~~~   │                                      │
 % │   ϟ ~~~~ ϟ ~~~~~   │                                      │
 % │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
-% There are 2 main usage:
-% - One entry per row for long elements (e.g. address, phone)
-% - Two entries per row for short elements (e.g. git, twitter)
+% @TODO: currently, the code using `tabularx`, which is fairly elegant, does not
+% work inside an `\newenvironment`. I don't have time to troubleshoort that, so
+% the tables code will be in the main files for now.
 %
-% We define the contacts elements as 2 set of functionalities:
-% - An environment for the contacts table:
-%   - \begin{contactstable} ... \end{contactstable}
-% - Commands for each element's icon and text
-%   - \c<element>  e.g. \caddress
-%   - \c<element>icon  e.g. \caddressicon
+% Below is an iteration using `tabular*` which does work for icons, but requires
+% fine-tuning of the dimension of the left column (containing the icons).
 \newenvironment{iconstable}{
-    % Remove spacing around cell contents -> equivalent to spamming @{}
+    % Reduce horizontal space around cells content
     \setlength{\tabcolsep}{2pt}
-    \begin{tabular*}{\leftcolumnwidth}{ | c | R{\leftcolumnwidth - 4\tabcolsep - \iconswidth} |}
-    \hline
+    \debug{% In debug mode, add vertical separator between columns
+        \begin{tabular*}{\leftcolumnwidth}
+            {|c|R{\leftcolumnwidth - 4\tabcolsep - \iconswidth}|}
+    }{%
+        \begin{tabular*}{\leftcolumnwidth}
+            {|c|R{\leftcolumnwidth - 4\tabcolsep - \iconswidth}|}
+    }%
+    \debug{\hline}{}
 }{
-    \hline
+    \debug{\hline}{}
     \end{tabular*}
 }
+
 
 % Contacts items
 % --------------------------------------
@@ -1009,10 +1019,6 @@
 % Starts a new category of skills
 % Usage: \cvskill{<type>}{<skillset>}
 \newcommand*{\skillcategory}[1]{\skilltypestyle{#1}}
-\newenvironment{cvskills}{
-  %\vspace{\acvSectionContentTopSkip}
-  \vspace{-1.5mm}
-}{}
 
 % Environment for complex skills boxes with tikz
 \newcommand*{\skillicon}[2]{

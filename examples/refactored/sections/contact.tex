@@ -1,15 +1,25 @@
-%----------------------------------------------------------------------------------------
-%	CONTACT
-%----------------------------------------------------------------------------------------
 
 \cvsection{Contact}
 
-\begin{iconstable}
-    \caddressicon & \caddress\\
-    \cmobileicon & \cmobile\\
-    \cemailicon & \cemail\\
-    \cgiticon & \cgituser\\
-    \clinkedinicon & \clinkedinuser\\
-    \corcidicon & \corciduser\\
-    \contacticonstyle{\icon{\faHome}} & \contactstyle{Marital status: married}\\
-\end{iconstable}
+{
+% Reduce horizontal space around cells content
+\setlength{\tabcolsep}{2pt}
+\debug{
+    % In debug mode, add vertical separator between columns
+    \begin{tabularx}{\leftcolumnwidth}
+        {|c|>{\raggedleft\arraybackslash}X|}
+}{
+    \begin{tabularx}{\leftcolumnwidth}
+        {c>{\raggedleft\arraybackslash}X}
+}
+    \debug{\hline}{}
+    \caddressicon & \strut \caddress\\ \debug{\hline}{}
+    \cmobileicon & \strut \cmobile\\ \debug{\hline}{}
+    \cemailicon & \strut \cemail\\ \debug{\hline}{}
+    \cgiticon & \strut \cgituser\\ \debug{\hline}{}
+    \clinkedinicon & \strut \clinkedinuser\\ \debug{\hline}{}
+    \corcidicon & \strut \corciduser\\ \debug{\hline}{}
+    \contacticonstyle{\icon{\faHome}} &
+        \strut \contactstyle{Marital status: married}\\ \debug{\hline}{}
+\end{tabularx}
+}

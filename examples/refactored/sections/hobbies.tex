@@ -4,10 +4,28 @@
 
 \cvsection{Hobbies}
 
-\begin{iconstable}
-    \hobbiesiconstyle{\icon{\faMap}} & \hobbiesstyle{Navigation}\\
-    \hobbiesiconstyle{\icon{\faBomb}} & \hobbiesstyle{Explosives}\\
-    \hobbiesiconstyle{\icon{\faBitcoin}} & \hobbiesstyle{Treasure hunting}\\
-    \hobbiesiconstyle{\icon{\faShip}} & \hobbiesstyle{Sailing}\\
-    \hobbiesiconstyle{\icon{\faSwimmer}} & \hobbiesstyle{Swimming}\\
-\end{iconstable}
+{
+% Reduce horizontal space around cells content
+\setlength{\tabcolsep}{2pt}
+\debug{
+    % In debug mode, add vertical separator between columns
+    \begin{tabularx}{\leftcolumnwidth}
+        {|c|>{\raggedleft\arraybackslash}X|}
+}{
+    \begin{tabularx}{\leftcolumnwidth}
+        {c>{\raggedleft\arraybackslash}X}
+}
+    \debug{\hline}{}
+    \hobbiesiconstyle{\icon{\faMap}} & \strut\hobbiesstyle{Navigation}\\
+    \debug{\hline}{}
+    \hobbiesiconstyle{\icon{\faBomb}} & \strut\hobbiesstyle{Explosives}\\
+    \debug{\hline}{}
+    \hobbiesiconstyle{\icon{\faBitcoin}} &
+        \strut\hobbiesstyle{Treasure hunting}\\
+    \debug{\hline}{}
+    \hobbiesiconstyle{\icon{\faShip}} & \strut\hobbiesstyle{Sailing}\\
+    \debug{\hline}{}
+    \hobbiesiconstyle{\icon{\faSwimmer}} & \strut\hobbiesstyle{Swimming}\\
+    \debug{\hline}{}
+\end{tabularx}
+}

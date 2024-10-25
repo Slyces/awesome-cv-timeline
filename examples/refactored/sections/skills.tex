@@ -1,10 +1,5 @@
-%----------------------------------------------------------------------------------------
-%	SECTION TITLE
-%----------------------------------------------------------------------------------------
 
 \cvsection{Skills}
-
-\begin{cvskills}
 
 % ------------------------------------------------
 \skillcategory{Tools}
@@ -29,28 +24,26 @@
     \skill{Python}\skill{Shark}\skill{\textsc{Monkey}}
 \end{skillstable}
 
-
 % ------------------------------------------------
 \skillcategory{Languages}
 
-\begin{tabular*}{\leftcolumnwidth - 2\sidemargin + 2\iconswidth}{lR{\leftcolumnwidth - \sidemargin - \iconswidth+0.8mm}}
-    \hobbiesstyle{Pirate} & \hobbiesstyle{(Native)}\\
-    \hobbiesstyle{Parrot} & \hobbiesstyle{(Fluent)}\\
-    % \hobbiesstyle{German} & \hobbiesstyle{(Intermediate)}\\
-    \hobbiesstyle{Spanish} & \hobbiesstyle{(Rudimentary)}\\
-    % \hobbiesstyle{Chinese} & \hobbiesstyle{(Rudimentary)}\\
-    % \hobbyiconstyle{\faDumbbell} & \hobbiesstyle{Fitness/workout} \\
-    % \hobbyiconstyle{\faRunning} & \hobbiesstyle{Street running} \\
-    % \hobbyiconstyle{\faCodeBranch} & \hobbiesstyle{Therapeutic programming} \\
-    % \hobbyiconstyle{\faGamepad} & \hobbiesstyle{Video games} \\
-    % \hobbyiconstyle{\faCookieBite} & \hobbiesstyle{Cooking} \\
-    % \hobbyiconstyle{\faCameraRetro} & \hobbiesstyle{Photography} \\
-\end{tabular*}
-
-% \vspace{3mm}
-% \begin{cvitems}
-% \end{cvitems}
-
-\end{cvskills}
-
-\vspace{2mm}
+{
+% Reduce horizontal space around cells content
+\setlength{\tabcolsep}{2pt}
+\debug{
+    % In debug mode, add vertical separator between columns
+    \begin{tabularx}{\leftcolumnwidth}
+        {|c|>{\raggedleft\arraybackslash}X|}
+}{
+    \begin{tabularx}{\leftcolumnwidth}
+        {c>{\raggedleft\arraybackslash}X}
+}
+    \debug{\hline}{}
+    \hobbiesstyle{Pirate} & \strut\hobbiesstyle{(Native)}\\
+    \debug{\hline}{}
+    \hobbiesstyle{Parrot} & \strut\hobbiesstyle{(Fluent)}\\
+    \debug{\hline}{}
+    \hobbiesstyle{Spanish} & \strut\hobbiesstyle{(Rudimentary)}\\
+    \debug{\hline}{}
+\end{tabularx}
+}
