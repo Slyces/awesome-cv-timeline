@@ -753,6 +753,193 @@
 \def\cpaperlink#1{\contacticonstyle{
     \href{#1}{\scalebox{0.8}{\icon{\faExternalLink*}}}}}
 
+% Skills
+% --------------------------------------
+% This section (on the left side) provides an overview of keywords related to
+% your industry for a first scan of compatibility of your profile with the
+% position.
+%
+% Ideally, the list of skills should be fairly short as you should tailor it to
+% the job you're targeting.
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+% │   Skills           │                                      │
+% │                    │                                      │
+% │   Group 1          ○                                      │
+% │   ▢▢▢▢ ▢▢▢▢ ▢▢▢▢   │                                      │
+% │   ▢▢▢▢ ▢▢▢▢        │                                      │
+% │   Group 2          │                                      │
+% │   ▢▢▢▢ ▢▢▢▢ ▢▢▢▢   │                                      │
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+
+% Skills entry
+% - - - - - - - - - - - - - - - - - - -
+% Starts a new entry for skills (group of related keyword badges).
+% Usage: \skillcategory{<title>}
+\newcommand*{\skillcategory}[1]{\skilltypestyle{#1}}
+
+% Skills table
+% - - - - - - - - - - - - - - - - - - -
+% Implement the skill badge using tikz
+\newcommand*{\skilltikz}[2]{
+    \begin{tikzpicture}[
+        x=0.2cm,
+        y=0.23cm,
+        color=lighttext!50!graytext,
+        skill/.style={text width=1.5cm, align=left},
+        icon/.style={text width=0.5cm, align=center},
+    ]
+        \def\swidth{2.5}
+        \def\shift{0.4}
+
+        \node[skill] (S) at (0,0) {\skillsetstyle{#1}};
+        %\node[icon] (I) at (1.9,0) {\skillsetstyle{#2}};
+        \draw[] ({- 4 - \shift},1) -- ({\swidth + \shift},1) -- ({\swidth + \shift},-1) -- ({-4 - \shift},-1) -- cycle;
+        %\draw[line width=0.4pt, densely dashed] (\swidth - 1.5,1) -- (\swidth - 1.5,-1);
+    \end{tikzpicture}
+}
+
+% Implement the skill badge with tcolorbox
+\newtcolorbox{skillbadge}{
+    % Color of the box and content
+    colframe=lighttext,
+    colback=white,
+    % TODO: Arbitrary height and width, could be configurable
+    height=11pt,
+    width=1.47cm,
+    boxrule=0.4pt,
+    % Padding
+    top=-0.8pt,  % Visually center vertically
+    bottom=0pt,
+    left=-1pt,
+    right=-1pt,
+    % Other settings
+    tcbox raise base,
+    halign=center,
+    nobeforeafter,
+    on line,
+}
+
+\newcommand*{\skill}[1]{
+    % Use the tcolorbox implementation
+    \begin{skillbadge}\skillsetstyle{#1}\end{skillbadge}
+}
+
+\newenvironment{skillstable}{
+    % TODO: unify lengths
+    \vspace{-0.3mm}
+}{
+    \vspace{-2.0mm}
+}
+
+% Entries Titles
+% --------------------------------------
+% Main nodes titles (section) and minor nodes titles (entries)
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+% │                 => ● Experience                           │
+% │                    │                                      │
+% │                 => ○ Job Title                   Location │
+% │                    │ Company                 start - stop │
+% │                    │ • ~~~~~~~~~~~~~                      │
+% │                    │  • ~~~~~~~~~                         │
+% │                    │  • ~~~~~~~                           │
+% │                    │ • ~~~~~~~~~~~~~~                     │
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+
+% CV Section (Experience, Education, ...)
+% - - - - - - - - - - - - - - - - - - -
+% Usage: \cvsection{<section-title>}
+\newcommand{\cvsection}[1]{%
+  \sectionstyle{#1}
+  \phantomsection
+  %\color{gray}\vhrulefill{0.9pt}
+  % Increase the sections counter (A3 -> B0)
+  \stepcounter{sections}
+  % Save the position of the section as 'A0' in the aux file
+  \zsavepos{\Alph{sections}\arabic{entries}}
+  \vspace{\acvSectionTopSkip}
+}
+
+% Define a subsection for CV
+% Usage: \cvsubsection{<subsection-title>}
+\newcommand{\cvsubsection}[1]{%
+  \vspace{\acvSectionContentTopSkip}
+  \vspace{-3mm}
+  \subsectionstyle{#1}
+  \phantomsection
+}
+
+
+% Entries Content
+% --------------------------------------
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+% │                    ● Experience                           │
+% │                    │                                      │
+% │                    ○ Job Title                   Location │
+% │                    │ Company                 start - stop │
+% │                 => │ • ~~~~~~~~~~~~~                      │
+% │                 => │  • ~~~~~~~~~                         │
+% │                 => │  • ~~~~~~~                           │
+% │                 => │ • ~~~~~~~~~~~~~~                     │
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+
+% Keywords
+% - - - - - - - - - - - - - - - - - - -
+% Highlight keywords that relate to your skills (but within the context of your
+% experiences)
+\newcommand*{\keyword}[1]{\keywordstyle{#1}}
+
+
+% Paragraph
+% - - - - - - - - - - - - - - - - - - -
+\newenvironment{cvparagraph}{%
+    \vspace{\acvSectionContentTopSkip}
+    \vspace{-3mm}
+    \paragraphstyle
+}{%
+    \par
+    \vspace{2mm}
+}
+
+
+% Entries
+% - - - - - - - - - - - - - - - - - - -
+\newenvironment{cventries}[1][]{%
+    % Make sure that you can set a title/separator for the current entry-list
+    \raggedright\entrytitlestyle{#1}
+    \vspace{\acvSectionContentTopSkip}
+    \begin{center}
+}{%
+    % TODO: \stopsection
+    % Save the position of the end of section as 'A1-end' in the aux file
+    \zsavepos{\Alph{sections}\arabic{entries}-end}
+    \end{center}
+}
+
+% Environment for list items
+% - - - - - - - - - - - - - - - - - - -
+\newenvironment{cvitems}{%
+    \vspace{-4.0mm}
+    \begin{justify}
+        \begin{itemize}[leftmargin=2ex, nosep, noitemsep]
+            \setlength{\parskip}{0pt}
+            \renewcommand{\labelitemi}{\bullet}
+            \renewcommand{\labelitemii}{$\circ$}
+}{%
+        \end{itemize}
+    \end{justify}
+    \vspace{-4.0mm}
+}
+
+% Nested list items (in previous env)
+% - - - - - - - - - - - - - - - - - - -
+\newenvironment{cvitemsnested}{
+    \begin{itemize}[leftmargin=2ex, nosep, noitemsep]
+}{
+    \end{itemize}
+}
+
+
+
 %-------------------------------------------------------------------------------
 %               Commands for dual-column and timeline
 %-------------------------------------------------------------------------------
@@ -886,59 +1073,9 @@
 }
 
 %-------------------------------------------------------------------------------
-%               Section, Subsection (titles)
-%-------------------------------------------------------------------------------
-% Define a section for CV
-% Usage: \cvsection{<section-title>}
-\newcommand{\cvsection}[1]{%
-  \sectionstyle{#1}
-  \phantomsection
-  %\color{gray}\vhrulefill{0.9pt}
-  % Increase the sections counter (A3 -> B0)
-  \stepcounter{sections}
-  % Save the position of the section as 'A0' in the aux file
-  \zsavepos{\Alph{sections}\arabic{entries}}
-  \vspace{\acvSectionTopSkip}
-}
-
-% Define a subsection for CV
-% Usage: \cvsubsection{<subsection-title>}
-\newcommand{\cvsubsection}[1]{%
-  \vspace{\acvSectionContentTopSkip}
-  \vspace{-3mm}
-  \subsectionstyle{#1}
-  \phantomsection
-}
-
-%-------------------------------------------------------------------------------
 %               Paragraph, Entries (contents)
 %-------------------------------------------------------------------------------
 
-% Highlight keywords you want to emphasize in your CV (e.g. technical skills)
-% Usage: \keyword{<keywords>}
-\newcommand*{\keyword}[1]{#1}
-
-% Define a paragraph for CV
-\newenvironment{cvparagraph}{%
-  \vspace{\acvSectionContentTopSkip}
-  \vspace{-3mm}
-  \paragraphstyle
-}{%
-  \par
-  \vspace{2mm}
-}
-
-% Define an environment for cventry
-\newenvironment{cventries}[1][]{%
-  % Make sure that you can set a title/separator for the current entry-list
-  \raggedright\entrytitlestyle{#1}
-  \vspace{\acvSectionContentTopSkip}
-  \begin{center}
-}{%
-  % Save the position of the end of section as 'A1-end' in the aux file
-  \zsavepos{\Alph{sections}\arabic{entries}-end}
-  \end{center}
-}
 
 % Use to highlight the duration of an experience
 % Usage: \duration{<duration>} (e.g. \duration{2 months})
@@ -993,18 +1130,6 @@
 
 
 % Define an environment for cvitems(for cventry)
-\newenvironment{cvitems}{%
-  \vspace{-4.0mm}
-  \begin{justify}
-  \begin{itemize}[leftmargin=2ex, nosep, noitemsep]
-    \setlength{\parskip}{0pt}
-    \renewcommand{\labelitemi}{\bullet}
-    \renewcommand{\labelitemii}{$\circ$}
-}{%
-  \end{itemize}
-  \end{justify}
-  \vspace{-4.0mm}
-}
 
 \newenvironment{cvitemsnested}{
     \begin{itemize}[leftmargin=2ex, nosep, noitemsep]
@@ -1016,62 +1141,6 @@
 %-------------------------------------------------------------------------------
 %               Skills & Keywords
 %-------------------------------------------------------------------------------
-% Starts a new category of skills
-% Usage: \cvskill{<type>}{<skillset>}
-\newcommand*{\skillcategory}[1]{\skilltypestyle{#1}}
-
-% Environment for complex skills boxes with tikz
-\newcommand*{\skillicon}[2]{
-    \begin{tikzpicture}[
-        x=0.2cm,
-        y=0.23cm,
-        color=lighttext!50!graytext,
-        skill/.style={text width=1.5cm, align=left},
-        icon/.style={text width=0.5cm, align=center},
-    ]
-        \def\swidth{2.5}
-        \def\shift{0.4}
-
-        \node[skill] (S) at (0,0) {\skillsetstyle{#1}};
-        %\node[icon] (I) at (1.9,0) {\skillsetstyle{#2}};
-        \draw[] ({- 4 - \shift},1) -- ({\swidth + \shift},1) -- ({\swidth + \shift},-1) -- ({-4 - \shift},-1) -- cycle;
-        %\draw[line width=0.4pt, densely dashed] (\swidth - 1.5,1) -- (\swidth - 1.5,-1);
-    \end{tikzpicture}
-}
-
-% Environment for skills with tcolorbox
-\newtcolorbox{skillbox}{
-    colframe=lighttext,
-    colback=white,
-    tcbox raise base,
-    height=11pt,
-    width=1.47cm,
-    halign=center,
-    boxrule=0.4pt,
-    nobeforeafter,
-    on line,
-    top=0pt,
-    bottom=0pt,
-    left=-1pt,
-    right=-1pt,
-}
-
-\newcommand*{\skill}[1]{
-    \begin{skillbox}\skillsetstyle{#1}\end{skillbox}
-    %\skillsetstyle{#1}
-}
-
-\newenvironment{skillstable}{
-    %\renewcommand{\arraystretch}{0.8}
-    %\setlength{\tabcolsep}{0pt}
-    %\tabularx{\textwidth}{|X|X|X|}
-    %\begin{tabular}{|l|c|r|}
-    \vspace{-0.3mm}
-}{
-    %\end{tabular}
-    %\endtabularx
-    \vspace{-2.0mm}
-}
 
 
 
