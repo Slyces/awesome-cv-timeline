@@ -191,6 +191,26 @@
 \newcommand{\debug}[2]{\ifbool{debugmode}{#1}{#2}}
 
 
+%-------------------------------------------------------------------------------
+% TODO: commands to clean up
+%-------------------------------------------------------------------------------
+%% Define helper macros a user can change easily
+% Header
+\newcommand{\acvHeaderNameDelim}{\space}
+\newcommand{\acvHeaderAfterNameSkip}{4mm}
+\newcommand{\acvHeaderAfterPositionSkip}{4.5mm}
+\newcommand{\acvHeaderAfterAddressSkip}{-.5mm}
+\newcommand{\acvHeaderIconSep}{\space}
+\newcommand{\headerSep}{\quad\textbar\quad}
+\newcommand{\acvHeaderAfterSocialSkip}{3mm}
+\newcommand{\acvHeaderAfterQuoteSkip}{0mm}
+
+% Others
+\newcommand{\acvEntryTopSkip}{-2.5mm}
+\newcommand{\acvSectionTopSkip}{0pt}
+\newcommand{\acvSectionContentTopSkip}{1.5mm}
+
+
 % Layout
 % --------------------------------------
 % Configure page margins with geometry
@@ -530,7 +550,7 @@
 
 % Header & Picture
 % --------------------------------------
-% │ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - │
+% ┌───────────────────────────────────────────────────────────┐
 % │   ┌─────────┐                                             │
 % │   │         │  ┌────────────────────────────────┐         │
 % │   │ picture │  │          Name Surname          │         │
@@ -635,6 +655,26 @@
 % │ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - │
 \newenvironment{cvsummary}{\summarystyle}{\vspace{\summaryafterskip}}
 
+
+
+
+% Footer
+% --------------------------------------
+% Provides the footer as a single command with 3 elements:
+% <left>, <center>, <right>
+% │ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - │
+% │                        footer                       date  │
+% └───────────────────────────────────────────────────────────┘
+
+% Define a footer for every page of the resume
+% Usage: \makecvfooter{<left>}{<center>}{<right>}
+\newcommand*{\makecvfooter}[3]{%
+  \fancyfoot{}
+  \fancyfoot[L]{\footerstyle{#1}}
+  \fancyfoot[C]{\footerstyle{#2}}
+  \fancyfoot[R]{\footerstyle{#3}}
+}
+
 % Sidebar vs. Body
 % --------------------------------------
 % │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
@@ -645,24 +685,6 @@
 % │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
 %        sidebar                       body
 
-%-------------------------------------------------------------------------------
-%                Commands for extra
-%-------------------------------------------------------------------------------
-%% Define helper macros a user can change easily
-% Header
-\newcommand{\acvHeaderNameDelim}{\space}
-\newcommand{\acvHeaderAfterNameSkip}{4mm}
-\newcommand{\acvHeaderAfterPositionSkip}{4.5mm}
-\newcommand{\acvHeaderAfterAddressSkip}{-.5mm}
-\newcommand{\acvHeaderIconSep}{\space}
-\newcommand{\headerSep}{\quad\textbar\quad}
-\newcommand{\acvHeaderAfterSocialSkip}{3mm}
-\newcommand{\acvHeaderAfterQuoteSkip}{0mm}
-
-% Others
-\newcommand{\acvEntryTopSkip}{-2.5mm}
-\newcommand{\acvSectionTopSkip}{0pt}
-\newcommand{\acvSectionContentTopSkip}{1.5mm}
 
 % Sidebar Table
 % --------------------------------------
@@ -869,6 +891,77 @@
 }
 
 
+% CV Entry
+% - - - - - - - - - - - - - - - - - - -
+% Main entry to show an experience or degree and an associated date/duration
+% and location.
+% There are 2 separate ways to use this command.
+%
+% (1) Usage: \cventry{<position>}{<title>}{<location>}{<date>}{<description>}
+% • Full experience description (what, where [city], where [company], when)
+%
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+% │                 => ○ Job Title                   Location │
+% │                 => │ Company                 start - stop │
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+%
+%
+% (2) Usage: \cventry{<position>}{}{}{<date>}{<description>}
+% • Shorter experience description: what, when
+% • Good for personal projects for instance
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+% │                 => ○ Job Title               start - stop │
+% │                    │ • ~~~~~~~~~~                         │
+% │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
+%
+% Note that 'position' and 'title' can be interchanged depending on what you
+% want to highlight in your professional experience
+%
+% Usage: \cventry{<position>}{<title>}{<location>}{<date>}{<description>}
+\newcommand*{\cventry}[5]{%
+    % Increase the entry counter (A0 -> A1)
+    \stepcounter{entries}
+    % Save the position of the entry as 'A1' in the aux file
+    \zsavepos{\Alph{sections}\arabic{entries}}
+    \vspace{\acvEntryTopSkip}
+    \setlength\tabcolsep{0pt}
+    \setlength{\extrarowheight}{0pt}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 3.5cm} R{3.5cm}}
+        \ifempty{#2#3}{%
+            % Shorter usage (2)
+            \entrypositionstyle{#1} & \entrydatestyle{#4} \\
+        }{%
+            % Complete usage (1)
+            \entrytitlestyle{#2} & \entrylocationstyle{#3} \\
+            \entrypositionstyle{#1} & \entrydatestyle{#4} \\
+        }
+        % In all usages, the description is handled the same way
+        \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}}
+    \end{tabular*}%
+}
+
+% CV Subentry
+% - - - - - - - - - - - - - - - - - - -
+
+% TODO: use in one example & clean up
+% Usage: \cvsubentry{<position>}{<title>}{<date>}{<description>}
+\newcommand*{\cvsubentry}[4]{%
+  \setlength\tabcolsep{0pt}
+  \setlength{\extrarowheight}{0pt}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 4.5cm} R{4.5cm}}
+    \setlength\leftskip{0.2cm}
+    \subentrytitlestyle{#2} & \ifthenelse{\equal{#1}{}}
+      {\subentrydatestyle{#3}}{}
+    \ifthenelse{\equal{#1}{}}
+      {}
+      {\subentrypositionstyle{#1} & \subentrydatestyle{#3} \\}
+    \ifthenelse{\equal{#4}{}}
+      {}
+      {\multicolumn{2}{L{17.0cm}}{\subdescriptionstyle{#4}} \\}
+  \end{tabular*}
+}
+
+
 % Entries Content
 % --------------------------------------
 % │ - - - - - - - - - -+- - - - - - - - - - - - - - - - - - - │
@@ -1058,89 +1151,6 @@
         }
     \end{tikzpicture}
 }
-
-
-%-------------------------------------------------------------------------------
-%               Footer
-%-------------------------------------------------------------------------------
-% Define a footer for CV
-% Usage: \makecvfooter{<left>}{<center>}{<right>}
-\newcommand*{\makecvfooter}[3]{%
-  \fancyfoot{}
-  %\fancyfoot[L]{\footerstyle{#1}}
-  \fancyfoot[C]{\footerstyle{#2}}
-  \fancyfoot[R]{\footerstyle{#1}}
-}
-
-%-------------------------------------------------------------------------------
-%               Paragraph, Entries (contents)
-%-------------------------------------------------------------------------------
-
-
-% Use to highlight the duration of an experience
-% Usage: \duration{<duration>} (e.g. \duration{2 months})
-\newcommand*{\duration}[1]{}
-
-% Define an entry of cv information
-% Usage: \cventry{<position>}{<title>}{<location>}{<date>}{<description>}
-\newcommand*{\cventry}[5]{%
-  % Increase the entry counter (A0 -> A1)
-  \stepcounter{entries}
-  % Save the position of the entry as 'A1' in the aux file
-  \zsavepos{\Alph{sections}\arabic{entries}}
-  \vspace{\acvEntryTopSkip}
-  \setlength\tabcolsep{0pt}
-  \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 3.5cm} R{3.5cm}}
-    \ifempty{#2#3}
-      {\entrypositionstyle{#1} & \entrydatestyle{#4} \\}
-      {\entrytitlestyle{#2} & \entrylocationstyle{#3} \\
-      \entrypositionstyle{#1} & \entrydatestyle{#4} \\}
-    \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}}
-  \end{tabular*}%
-}
-
-% Define an environment for cvsubentry
-\newenvironment{cvsubentries}{%
-  \begin{center}
-}{%
-  \end{center}
-}
-% Define a subentry of cv information
-% Usage: \cvsubentry{<position>}{<title>}{<date>}{<description>}
-\newcommand*{\cvsubentry}[4]{%
-  \setlength\tabcolsep{0pt}
-  \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 4.5cm} R{4.5cm}}
-    \setlength\leftskip{0.2cm}
-    \subentrytitlestyle{#2} & \ifthenelse{\equal{#1}{}}
-      {\subentrydatestyle{#3}}{}
-    \ifthenelse{\equal{#1}{}}
-      {}
-      {\subentrypositionstyle{#1} & \subentrydatestyle{#3} \\}
-    \ifthenelse{\equal{#4}{}}
-      {}
-      {\multicolumn{2}{L{17.0cm}}{\subdescriptionstyle{#4}} \\}
-  \end{tabular*}
-}
-
-%-------------------------------------------------------------------------------
-%               Within Entries (list, nested lists, ...)
-%-------------------------------------------------------------------------------
-
-
-% Define an environment for cvitems(for cventry)
-
-\newenvironment{cvitemsnested}{
-    \begin{itemize}[leftmargin=2ex, nosep, noitemsep]
-}{
-    \end{itemize}
-}
-
-
-%-------------------------------------------------------------------------------
-%               Skills & Keywords
-%-------------------------------------------------------------------------------
 
 
 
