@@ -185,7 +185,7 @@
 % --------------------------------------
 % Create a boolean to enable/disable debug mode
 \newbool{debugmode}
-\setbool{debugmode}{false}
+\setbool{debugmode}{true}
 
 % Create commands for conditional code depending on debug mode
 \newcommand{\debug}[2]{\ifbool{debugmode}{#1}{#2}}
@@ -714,7 +714,7 @@
             {|c|R{\leftcolumnwidth - 4\tabcolsep - \iconswidth}|}
     }{%
         \begin{tabular*}{\leftcolumnwidth}
-            {|c|R{\leftcolumnwidth - 4\tabcolsep - \iconswidth}|}
+            {cR{\leftcolumnwidth - 4\tabcolsep - \iconswidth}}
     }%
     \debug{\hline}{}
 }{
@@ -749,11 +749,11 @@
 \def\cmobileicon{\contacticonstyle{\icon{\faMobile}}}
 
 % Github
-\def\cgituser{\contactstyle{
+\def\cgituser{\contactstyle{%
     \href{https://github.com/\@github}{\@github}}}
-\def\cgiticon{\contacticonstyle{
+\def\cgiticon{\contacticonstyle{%
     \href{https://github.com/\@github}{\icon{\faGithubSquare}}}}
-\def\cgitproject#1{\contacticonstyle{
+\def\cgitproject#1{\contacticonstyle{%
     \href{https://github.com/\@github/#1}{\scalebox{0.8}{\icon{\faGithub}}}}}
 
 % Linkedin
@@ -768,11 +768,11 @@
 
 % Orcid
 \def\corciduser{\contactstyle{\href{https://orcid.org/\@orcid}{\@orcid}}}
-\def\corcidicon{\contacticonstyle{
+\def\corcidicon{\contacticonstyle{%
     \href{https://orcid.org/\@orcid}{\icon{\faOrcid}}}}
 
 % In-place link (any website, publication, ...)
-\def\cpaperlink#1{\contacticonstyle{
+\def\cpaperlink#1{\contacticonstyle{%
     \href{#1}{\scalebox{0.8}{\icon{\faExternalLink*}}}}}
 
 % Skills
@@ -1032,102 +1032,188 @@
 }
 
 
-
-%-------------------------------------------------------------------------------
-%               Commands for dual-column and timeline
-%-------------------------------------------------------------------------------
+% Timeline & Dual-Column Layout
+% ---------------------------------------------------------
+% This is the main element brought by this one-page resume template.
+%      ┌───────────────────────────────────────────────────────────────┐
+%      │            ┌────────────────────────────────┐                 │
+%      │            │          Name Surname          │                 │
+%      │            └────────────────────────────────┘                 │
+%      │                job title - specialisation                     │
+%      │                                                               │
+%      │    ┌────────────────────────────────────────────────────┐     │
+%      │    │ Summary / Quote                                    │     │
+%      │    └────────────────────────────────────────────────────┘     │
+%      │  ╔════════════════╔═══╗════════════════════════════════════╗  │
+%      │  ║ Contact        ║ ● ║ Experience                         ║  │
+%      │  ║                ║ │ ║                                    ║  │
+%      │  ║ ϟ     ~~~~~~~~ ║ ○ ║ Job Title                 Location ║  │
+%      │  ║ ϟ       ~~~~~~ ║ │ ║ Company               start - stop ║  │
+%      │  ║ ϟ     ~~~~~~~~ ║ │ ║ • ~~~~~~~~~~~~~                    ║  │
+%      │  ║ ϟ ~~~~ ϟ ~~~~  ║ │ ║  • ~~~~~~~~~                       ║  │
+%      │  ║                ║ │ ║  • ~~~~~~~                         ║  │
+%      │  ║ Skills         ║ │ ║ • ~~~~~~~~~~~~~~                   ║  │
+%      │  ║                ║ │ ║                                    ║  │
+%      │  ║ Group 1        ║ ○ ║ Job Title                 Location ║  │
+%      │  ║ ▢▢▢▢ ▢▢▢▢ ▢▢▢▢ ║ │ ║ Company               start - stop ║  │
+%      │  ║ Group 2        ║ │ ║ • ~~~~~~~~~~~~~                    ║  │
+%      │  ║ ▢▢▢▢ ▢▢▢▢ ▢▢▢▢ ║ │ ║  • ~~~~~~~~~                       ║  │
+%      │  ║                ║ │ ║  • ~~~~~~~                         ║  │
+%      │  ║ Hobbies        ║ │ ║ • ~~~~~~~~~~~~~~                   ║  │
+%      │  ║ ϟ     ~~~~~~~~ ║ │ ║  • ~~~~~~~~                        ║  │
+%      │  ║ ϟ      ~~~~~~~ ║ │ ║  • ~~~~~~~~~~                      ║  │
+%      │  ║                ║ ● ║ Education                          ║  │
+%      │  ║ Languages      ║ │ ║                                    ║  │
+%      │  ║ ϟ     ~~~~~~~~ ║ ○ ║ Degree Name               Location ║  │
+%      │  ║ ϟ      ~~~~~~~ ║ │ ║ University            start - stop ║  │
+%      │  ║                ║ │ ║                                    ║  │
+%      │  ╚════════════════╚═══╝════════════════════════════════════╝  │
+%      │               >> TIMELINE <<                                  │
+%      │                         footer                        date    │
+%      └───────────────────────────────────────────────────────────────┘
 
 % This counter counts major nodes (sections)
 \newcounter{sections}
 % This counter counts minor nodes (entries). Resets when sections increments.
 \newcounter{entries}[sections]
 
+% If you want more ganularity in the nodes (e.g. to highlight multiple position
+% in the same company, ...) you can create a counter that resets when the
+% previous one increments.
+
+% Dealing with tikz coordinates
+% --------------------------------------
+% Set of command to go from distances (pt. & others) to a position that tikz
+% can work with
+
 % Converts the values saved by `zref-savepos` to a more convenient unit (pt.)
 % Important: if the label is not defined, the value is 0
 \newcommand*{\getposy}[1]{\the\dimexpr\zposy{#1}sp\relax}
 \newcommand*{\getposx}[1]{\the\dimexpr\zposx{#1}sp\relax}
 
-% Finding tikz coordinates for saved labels
-% ----------------------------------------
-% Set of command to go from distances (pt. & others) to a position that tikz
-% can work with
-
-% Command for the x-shift for labels
+% Command for the x-shift of labels. This decides the horizontal position of
+% the timeline.
+%\newcommand{\tikzposxshift}{\sidemargin + \sidebarwidth + \timelinemargin}
 \newcommand{\tikzposxshift}{\sidemargin + \leftcolumnwidth + \columnsmargin + \timelinemargin}
 
-% Each of those is defining a command for each type of nodes as the (x,y)
-% adjustment might be slightly different (e.g. higher line)
+% Coordinates per type of node
+% --------------------------------------
+% Define a command for each type of node as the (x,y) coordinates might require
+% adjustments depending on the type of node (e.g. higher line, ...)
 
 % Usage: \tikzpossection{<section-label>} e.g. \tikzpossection{A0}
 \newcommand{\tikzpossection}[1]{
     ([xshift=\tikzposxshift,yshift=\getposy{#1} + 5pt]current page.south west)
 }
-% Usage: \tikzposentry{<entry-label>} e.g. \tikzpossection{A1}
+% Usage: \tikzposentry{<entry-label>} e.g. \tikzposentry{A1}
 \newcommand{\tikzposentry}[1]{
     ([xshift=\tikzposxshift,yshift=\getposy{#1} - 7pt]current page.south west)
 }
-% Usage: \tikzposend{<end-label>} e.g. \tikzpossection{A4-end}
+% Usage: \tikzposend{<end-label>} e.g. \tikzposend{A4-end}
 \newcommand{\tikzposend}[1]{
     ([xshift=\tikzposxshift,yshift=\getposy{#1} - 0pt]current page.south west)
 }
 
+% Counters transitions
+% --------------------------------------
+% Define some commands to handle the counter transition logic, in order to have
+% all the logic related to counters/positions defined here
+\newcommand{\startsection}{%
+    % Increase the sections counter (A3 -> B0)
+    \stepcounter{sections}%
+    % Save the position of the section as 'B0' in the aux file
+    \zsavepos{\Alph{sections}\arabic{entries}}%
+}
+\newcommand{\startentry}{%
+    % Increase the entries counter (A0 -> A1)
+    \stepcounter{entries}%
+    % Save the position of the section as 'A0' in the aux file
+    \zsavepos{\Alph{sections}\arabic{entries}}%
+}
+\newcommand{\stopsection}{%
+    % Save the current position as 'A3-end' in the aux file
+    \zsavepos{\Alph{sections}\arabic{entries}-end}%
+}
 
+% Drawing the timeline
+% --------------------------------------
+% The timeline works by saving positions (A, A1, ...) in the aux file.
+% On a second pass, we can then draw the timeline in the middle of the two
+% columns (absolute positioning) using the positions we gathered.
+%
+% There are a couple corner cases to the logic, but in general we want to
+% declare the nodes {A, A1, ..., A5-end} then draw the lines from one to
+% the next.
+%
+%             ╔═══╗══════════════════════════════════╗
+%        (A0) ║ ● ║ Work Experience                  ║
+%             ║ │ ║                                  ║
+%        (A1) ║ ○ ║ Job title               Location ║
+%             ║ │ ║ Company                     Date ║
+%             ║ │ ║ • ~~~~~~~~~~~~~~                 ║
+%    (A1-end) ║ │ ║ • ~~~~~~~~~~~~~~~~~~~~           ║
+%             ║ │ ║                                  ║
+%        (A2) ║ ○ ║ Job title               Location ║
+%             ║ │ ║ Company                     Date ║
+%             ║ │ ║ • ~~~~~~~~~~~~~~~~               ║
+%    (A2-end) ║ │ ║ • ~~~~~~~~~                      ║
+%             ║   ║                                  ║
+%        (B0) ║ ● ║ Education                        ║
+%             ║ │ ║                                  ║
+%        (B1) ║ ○ ║ Degree                  Location ║
+%             ║ │ ║ University                  Date ║
+%    (B1-end) ║ │ ║ • ~~~~~~~~~                      ║
+%             ║ │ ║                                  ║
+%        (B2) ║ ○ ║ Degree                  Location ║
+%             ║ │ ║ University                  Date ║
+%    (B2-end) ║ │ ║ • ~~~~~~~~~~~                    ║
+%             ║ │ ║                                  ║
+%        (B3) ║ ○ ║ Degree                  Location ║
+%             ║ │ ║ University                  Date ║
+%             ║ │ ║ • ~~~~~~~~~~                     ║
+%    (B3-end) ║ │ ║ • ~~~~~~~~~                      ║
+%             ╚═══╝══════════════════════════════════╝
+%
+% When looking at this diagram, we realise that we want to define and draw:
+% (A0) -- (A1) -- (A2) -- (A2-end)
+% (B0) -- (B1) -- (B2) -- (B3) -- (B3-end)
+%
+% Note that in the regular layout, all sections will be counted, but some of
+% those will be on the left-side of the layout.
+% This means that we need to start at a given section (e.g. C).
+%
+% When dealing with multiple pages, you will also need to re-draw the timeline
+% in a new page, starting to the new section. You can decide to draw the
+% timeline on the right or left side of the page (vs. the middle in default
+% layout) by playing with the lengths used in `\tikzposxshift`, namely
+% `\sidebarwidth` and `\timelinemargin`
+
+% Usage: \timeline{<letter>} e.g. \timeline{B}
+% Where <letter> is the first section on the right side
 \newcommand{\timeline}[1]{
-    % The timeline works by saving positions (A, A1, ...) in the aux file.
-    % On a second pass, we can then draw the timeline in the middle of the two
-    % columns (absolute positioning) using the positions we gathered.
-    % There are a couple corner cases to the logic, but in general we want to
-    % declare the nodes {A, A1, ..., A5-end} then draw the lines from one to
-    % the next.
-    %
-    %              (A0) ● Work Experience
-    %                   │
-    %              (A1) ○ Position                                    Location
-    %                   │ company                                         Date
-    %                   │ ▪ Did this thing
-    %          (A1-end) │ ▪ Did that other thing
-    %                   │
-    %              (A2) ○ Other Position                              Location
-    %                   │ company                                         Date
-    %                   │ ▪ Did this thing
-    %          (A2-end) │ ▪ Did that other thing
-    %
-    %              (B0) ● Education
-    %                   │
-    %              (B1) ○ Degree Name
-    %                   │ university                                      Date
-    %                   │ ▪ Learnt this thing
-    %          (B1-end) │ ▪ Learnt that other thing
-    %                   │
-    %              (B2) ○ Other Degree                                Location
-    %                   │ university                                      Date
-    %                   │ ▪ Learnt this thing
-    %          (B2-end) │ ▪ Learnt that other thing
-    %                   │
-    %              (B3) ○ Other Degree                                Location
-    %                   │ university                                      Date
-    %                   │ ▪ Learnt this thing
-    %          (B3-end) │ ▪ Learnt that other thing
-    %
-    % When looking at this diagram, we realise that we want to define and draw:
-    % (A0) -- (A1) -- (A2) -- (A2-end)
-    % (B0) -- (B1) -- (B2) -- (B3) -- (B3-end)
+    % First argument `#1` is the first section on the right side
     \begin{tikzpicture} [
         remember picture,
         overlay,
+        % Colour for the elements drawn
         color=darktext,
         % Style for sections node (currently: filled black circle)
         section/.style={circle, fill, inner sep=0pt, minimum size=7pt},
         % Style for entries node (currently: empty black circle, smaller)
         entry/.style={circle, draw, inner sep=0pt, minimum size=5pt},
+        % Add here any style for further subdivision (e.g. internal mobility)
     ]
         % We don't know how many sections exist: iterate from the first letter
         % to some upper-bound (e.g. +10).
         \foreach \s[count=\i from 0] in {#1}{
+            % From here on, `\s` will have the value of the current section's
+            % letter (A, B, ...)
+
             % If the section exists, create a node `S0`
             \ifnum \zposy{\s0}>0
                 \node[section] (\s0) at \tikzpossection{\s0} {};
             \fi
+
             % We don't know how many entries exist
             % Iterate from the first index to some upper-bound (e.g. +10)
             \foreach \e[remember=\e as \laste (initially 0)] in {1,...,25}{
@@ -1150,21 +1236,4 @@
             }
         }
     \end{tikzpicture}
-}
-
-
-
-%-------------------------------------------------------------------------------
-%               Projects
-%-------------------------------------------------------------------------------
-% Define an entry of cv project
-% Usage: \cvproject{<subject>}{<duration>}{<description>}
-\newcommand*{\cvproject}[3]{%
-  \setlength\tabcolsep{0pt}
-  \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 2.5cm} R{2.5cm}}
-    \entrytitlestyle{#1} & \entrydatestyle{#2} \\
-    \descriptionstyle{#3} & \\
-    %\multicolumn{2}{L{\textwidth}}{}
-  \end{tabular*}%
 }
