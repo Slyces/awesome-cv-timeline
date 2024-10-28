@@ -23,14 +23,12 @@
 \addbibresource{bibliographies/papers-chapters.bib}
 \addbibresource{bibliographies/patents.bib}
 
-% If you would like to change the social information separator
-\renewcommand{\headerSep}{\quad\textbar\quad}
-
 % Header & Contacts Information
 % --------------------------------------
 \name{Jack}{Sparrow}
 \position{Captain{\enskip\cdotp\enskip}Pirate{\enskip\cdotp\enskip}Coach}
-\photo{images/jack.jpg}
+\photo[circle,edge,left]{images/jack.jpg}
+\setlength{\headerphotowidth}{3.8cm}
 
 \address{Port Tortuga, Caribbean Sea}
 \mobile{+1-800-SEABOUND}
@@ -72,17 +70,6 @@
 \setlength{\leftcolumnwidth}{5cm}
 \setlength{\columnsmargin}{0.5\sidemargin}
 \setlength{\timelinemargin}{0.5cm}
-
-\mdfsetup{%
-    % Border style
-    linecolor=awesome,
-    linewidth=1.2pt,
-    % Margins
-    innerleftmargin=0pt,
-    innerrightmargin=0pt,
-    innertopmargin=0pt,
-    innerbottommargin=0pt,
-}
 
 % Draw the timeline for experience & education (4th & 5th sections)
 \timeline{D,E}

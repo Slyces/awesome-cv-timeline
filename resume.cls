@@ -130,13 +130,16 @@
 % Header
 % --------------------------------------
 % Before header
-\newcommand{\headerbeforeskip}{0mm}
+\newcommand{\headerbeforeskip}{4mm}
 
 % In between name & position
-\newcommand{\headerinterskip}{3mm}
+\newcommand{\headerinterskip}{4mm}
 
 % After header
 \newcommand{\headerafterskip}{4mm}
+
+% Width for the photo
+\newlength{\headerphotowidth}
 
 % Summary
 % --------------------------------------
@@ -191,20 +194,23 @@
 
 \newcommand{\setupdebug}{\debug{
     \RequirePackage{showframe}
+
+    % Configuration for debug frames
+    \mdfsetup{%
+        % Border style
+        linecolor=awesome,
+        linewidth=1.2pt,
+        % Margins
+        innerleftmargin=0pt,
+        innerrightmargin=0pt,
+        innertopmargin=0pt,
+        innerbottommargin=0pt,
+    }
 }}{}
 
 %-------------------------------------------------------------------------------
 % TODO: commands to clean up
 %-------------------------------------------------------------------------------
-%% Define helper macros a user can change easily
-% Header
-\newcommand{\acvHeaderAfterPositionSkip}{4.5mm}
-\newcommand{\acvHeaderAfterAddressSkip}{-.5mm}
-\newcommand{\acvHeaderIconSep}{\space}
-\newcommand{\headerSep}{\quad\textbar\quad}
-\newcommand{\acvHeaderAfterSocialSkip}{3mm}
-\newcommand{\acvHeaderAfterQuoteSkip}{0mm}
-
 % Others
 \newcommand{\acvEntryTopSkip}{-2.5mm}
 \newcommand{\acvSectionTopSkip}{0pt}
@@ -227,6 +233,7 @@
 
 % Enable if you want to make header or footer using fancyhdr
 \pagestyle{fancy}
+
 
 
 % Colors
@@ -593,25 +600,33 @@
 
     % Figure out the width for text vs. photo
     \newlength{\headertextwidth}
-    \newlength{\headerphotowidth}
     \ifthenelse{\isundefined{\@photo}}{
-        % No photo => 100% for text
-        \setlength{\headertextwidth}{\textwidth}
+        % No photo => force 0cm for photo
+        \let\headerphotowidth\relax
+        \newlength{\headerphotowidth}
         \setlength{\headerphotowidth}{0cm}
     }{%
-        % Photo => ~ 25% for photo, 75% for text
-        \setlength{\headertextwidth}{0.76\textwidth}
-        \setlength{\headerphotowidth}{0.24\textwidth}
+        % Photo => default to ~ 25% for photo, 75% for text
+        \ifthenelse{\isundefined{\headerphotowidth}}{%
+            \setlength{\headerphotowidth}{0.24\textwidth}
+        }{}
     }%
+    \setlength{\headertextwidth}{\textwidth - \headerphotowidth}
 
     % Create minipages to show the photo & text side-by-side
-
+    \begin{mdframed}
+    \vspace{\headerbeforeskip}
     % Minipage for left-side photo
-    \begin{minipage}[c]{\headerphotowidth}%
-        \ifthenelse{\equal{\@photoalign}{left}}{\raggedright\drawphoto}{}
-    \end{minipage}%
+    \ifthenelse{\equal{\@photoalign}{left}}{
+        \begin{minipage}[c]{\headerphotowidth}%
+            \begin{mdframed}
+            \raggedright\drawphoto%
+            \end{mdframed}
+        \end{minipage}%
+    }{}%
     % Minipage for text
     \begin{minipage}[c]{\headertextwidth}
+        \begin{mdframed}
         % Handle text alignment (options: L | C | R)
         \ifthenelse{\equal{#1}{L}}{
             % Argument #1 <align-char> is 'L'
@@ -627,20 +642,25 @@
         % Text with 'firstname <sep> lastname'
         \headerfirstnamestyle{\@firstname}%
         \headerlastnamestyle{{}\space\@lastname}%
-        \\[\headerafterskip]%
+        \\[\headerinterskip]%
 
         % Position text (if defined)
-        \ifthenelse{\isundefined{\@position}}{
-            % No position => end of header skip
-        }{
+        \ifthenelse{\isundefined{\@position}}{}{%
             % Position => inter-skip, position, after skip
-            \headerpositionstyle{\@position\\[\acvHeaderAfterPositionSkip]}
+            \headerpositionstyle{\@position}%
         }%
+        \end{mdframed}
     \end{minipage}%
     % Minipage for right-side photo
-    \begin{minipage}[c]{\headerphotowidth}%
-        \ifthenelse{\equal{\@photoalign}{right}}{\raggedright\drawphoto}{}
-    \end{minipage}
+    \ifthenelse{\equal{\@photoalign}{right}}{%
+        \begin{minipage}[c]{\headerphotowidth}%
+            \begin{mdframed}
+            \raggedright\drawphoto%
+            \end{mdframed}
+        \end{minipage}
+    }{}%
+    \vspace{\headerafterskip}
+    \end{mdframed}
 }
 
 % Summary
