@@ -64,7 +64,6 @@
 
 % Set lengths for the whole document
 \setlength{\iconswidth}{10.7pt}
-\setlength{\headersmargin}{-0.2cm}
 
 % Set lenghts for the first page (double column layout)
 \setlength{\leftcolumnwidth}{5cm}
@@ -74,19 +73,17 @@
 % Draw the timeline for experience & education (4th & 5th sections)
 \timeline{D,E}
 
-\begin{textblock*}{\leftcolumnwidth}(0pt, \headersmargin)
+\begin{textblock*}{\leftcolumnwidth}(0pt, 0pt)
     \begin{mdframed}
         \input{sections/contact.tex}
-        \vspace{0mm}
         \input{sections/skills.tex}
-        \vspace{3.5mm}
         \input{sections/hobbies.tex}
     \end{mdframed}
 \end{textblock*}
 
 \begin{textblock*}
     {\paperwidth - 2\sidemargin - \leftcolumnwidth - \columnsmargin - 2\timelinemargin}
-    (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, \headersmargin)
+    (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, 0pt)
     \begin{mdframed}
         \input{sections/experience.tex}
         \input{sections/education.tex}
@@ -96,11 +93,13 @@
 \newpage
 \setlength{\leftcolumnwidth}{-\columnsmargin}
 
+% ------------------------------------------------------------------------------
+% Page 2
 \timeline{F,G} % H,I,J,L,...
 
 \begin{textblock*}
     {\paperwidth - 2\sidemargin - \leftcolumnwidth - \columnsmargin - 2\timelinemargin}
-    (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, \headersmargin)
+    (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, 0pt)
     \begin{mdframed}
         \vspace{-2mm}
         \input{sections/projects.tex}

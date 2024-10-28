@@ -143,19 +143,15 @@
 
 % Summary
 % --------------------------------------
-\newcommand{\summaryafterskip}{2mm}
+\newcommand{\summaryafterskip}{3mm}
 
 % Sections & Entries
 % --------------------------------------
-% After the section's title
-\newcommand{\sectiontitleskip}{1mm}
-% After the end of the whole section's content
-\newcommand{\sectionafterskip}{2mm}
-% Before section content (after titl
-\newcommand{\sectioncontentbeforeskip}{0mm}
-% Before entries
-\newcommand{\entrybeforeskip}{0mm}
+% Between section title and content
+\newcommand{\sectioncontentbeforeskip}{1.5mm}
 
+% After the end of the whole section's content
+\newcommand{\sectionafterskip}{0mm}
 
 % Sidebar & Timeline
 % --------------------------------------
@@ -169,7 +165,6 @@
 \newlength{\timelinemargin}
 
 % TDB
-\newlength{\headersmargin}
 \newlength{\leftcolumnwidth}
 \newlength{\columnsmargin}
 
@@ -212,9 +207,6 @@
 % TODO: commands to clean up
 %-------------------------------------------------------------------------------
 % Others
-\newcommand{\acvEntryTopSkip}{-2.5mm}
-\newcommand{\acvSectionTopSkip}{0pt}
-\newcommand{\acvSectionContentTopSkip}{1.5mm}
 
 
 % Layout
@@ -672,9 +664,12 @@
 % │   │ Summary                                           │   │
 % │   └───────────────────────────────────────────────────┘   │
 % │ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - │
-\newenvironment{cvsummary}{\summarystyle}{\vspace{\summaryafterskip}}
-
-
+\newenvironment{cvsummary}{%
+    \setlength{\parskip}{0pt}
+    \summarystyle
+}{%
+    \vspace{\summaryafterskip}
+}
 
 
 % Footer
@@ -688,7 +683,6 @@
 % Define a footer for every page of the resume
 % Usage: \makecvfooter{<left>}{<center>}{<right>}
 \newcommand*{\makecvfooter}[3]{%
-  \fancyfoot{}
   \fancyfoot[L]{\footerstyle{#1}}
   \fancyfoot[C]{\footerstyle{#2}}
   \fancyfoot[R]{\footerstyle{#3}}
@@ -890,23 +884,19 @@
 % - - - - - - - - - - - - - - - - - - -
 % Usage: \cvsection{<section-title>}
 \newcommand{\cvsection}[1]{%
-  \sectionstyle{#1}
-  \phantomsection
-  %\color{gray}\vhrulefill{0.9pt}
-  % Increase the sections counter (A3 -> B0)
-  \stepcounter{sections}
-  % Save the position of the section as 'A0' in the aux file
-  \zsavepos{\Alph{sections}\arabic{entries}}
-  \vspace{\acvSectionTopSkip}
+    \sectionstyle{#1}
+    \phantomsection
+    \startsection
 }
 
 % Define a subsection for CV
 % Usage: \cvsubsection{<subsection-title>}
 \newcommand{\cvsubsection}[1]{%
-  \vspace{\acvSectionContentTopSkip}
-  \vspace{-3mm}
-  \subsectionstyle{#1}
-  \phantomsection
+    % TODO: troubleshoot when used
+    \vspace{\sectioncontentbeforeskip}
+    \vspace{-3mm}
+    \subsectionstyle{#1}
+    \phantomsection
 }
 
 
@@ -938,14 +928,14 @@
 %
 % Usage: \cventry{<position>}{<title>}{<location>}{<date>}{<description>}
 \newcommand*{\cventry}[5]{%
-    % Increase the entry counter (A0 -> A1)
-    \stepcounter{entries}
-    % Save the position of the entry as 'A1' in the aux file
-    \zsavepos{\Alph{sections}\arabic{entries}}
-    \vspace{\acvEntryTopSkip}
+    % Configure an almost invisible table environment
     \setlength\tabcolsep{0pt}
     \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 3.5cm} R{3.5cm}}
+    % Ensure there are no vertical paragraph skips
+    \setlength{\parskip}{0pt}
+    % Handle counter and positions for entry start
+    \startentry
+    \begin{tabular*}{\textwidth}{l r}
         \ifempty{#2#3}{%
             % Shorter usage (2)
             \entrypositionstyle{#1} & \entrydatestyle{#4} \\
@@ -953,7 +943,7 @@
             % Complete usage (1)
             \entrytitlestyle{#2} & \entrylocationstyle{#3} \\
             \entrypositionstyle{#1} & \entrydatestyle{#4} \\
-        }
+        }%
         % In all usages, the description is handled the same way
         \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}}
     \end{tabular*}%
@@ -1004,7 +994,7 @@
 % Paragraph
 % - - - - - - - - - - - - - - - - - - -
 \newenvironment{cvparagraph}{%
-    \vspace{\acvSectionContentTopSkip}
+    \vspace{\sectioncontentbeforeskip}
     \vspace{-3mm}
     \paragraphstyle
 }{%
@@ -1015,16 +1005,17 @@
 
 % Entries
 % - - - - - - - - - - - - - - - - - - -
+% Environment spanning the whole section's content
 \newenvironment{cventries}[1][]{%
     % Make sure that you can set a title/separator for the current entry-list
     \raggedright\entrytitlestyle{#1}
-    \vspace{\acvSectionContentTopSkip}
+    \vspace{\sectioncontentbeforeskip}
     \begin{center}
 }{%
-    % TODO: \stopsection
     % Save the position of the end of section as 'A1-end' in the aux file
-    \zsavepos{\Alph{sections}\arabic{entries}-end}
     \end{center}
+    \stopsection
+    \vspace{\sectionafterskip}
 }
 
 % Environment for list items
@@ -1211,7 +1202,7 @@
 % Where <letter> is the first section on the right side
 \newcommand{\timeline}[1]{
     % First argument `#1` is the first section on the right side
-    \begin{tikzpicture} [
+    \begin{tikzpicture}[
         remember picture,
         overlay,
         % Colour for the elements drawn
@@ -1255,4 +1246,7 @@
             }
         }
     \end{tikzpicture}
+    % TODO: creating the timeline inserts vertical space wherever we call the
+    % code - this hack is here to compensate that space.
+    \vspace{-4mm}
 }
