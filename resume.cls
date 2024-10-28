@@ -136,7 +136,7 @@
 \newcommand{\headerinterskip}{3mm}
 
 % After header
-\newcommand{\headerafterskip}{0mm}
+\newcommand{\headerafterskip}{4mm}
 
 % Summary
 % --------------------------------------
@@ -198,8 +198,6 @@
 %-------------------------------------------------------------------------------
 %% Define helper macros a user can change easily
 % Header
-\newcommand{\acvHeaderNameDelim}{\space}
-\newcommand{\acvHeaderAfterNameSkip}{4mm}
 \newcommand{\acvHeaderAfterPositionSkip}{4.5mm}
 \newcommand{\acvHeaderAfterAddressSkip}{-.5mm}
 \newcommand{\acvHeaderIconSep}{\space}
@@ -628,8 +626,8 @@
 
         % Text with 'firstname <sep> lastname'
         \headerfirstnamestyle{\@firstname}%
-        \headerlastnamestyle{{}\acvHeaderNameDelim\@lastname}%
-        \\[\acvHeaderAfterNameSkip]%
+        \headerlastnamestyle{{}\space\@lastname}%
+        \\[\headerafterskip]%
 
         % Position text (if defined)
         \ifthenelse{\isundefined{\@position}}{
