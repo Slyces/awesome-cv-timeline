@@ -180,16 +180,18 @@
 \newlength{\iconswidth}
 \setlength{\iconswidth}{9pt}
 
-
 % Debug commands
 % --------------------------------------
 % Create a boolean to enable/disable debug mode
 \newbool{debugmode}
-\setbool{debugmode}{true}
+\setbool{debugmode}{false}
 
 % Create commands for conditional code depending on debug mode
 \newcommand{\debug}[2]{\ifbool{debugmode}{#1}{#2}}
 
+\newcommand{\setupdebug}{\debug{
+    \RequirePackage{showframe}
+}}{}
 
 %-------------------------------------------------------------------------------
 % TODO: commands to clean up
@@ -231,7 +233,6 @@
 
 % Colors
 % ----------------------------------------------------------
-
 
 % Gray-scale colors
 \definecolor{white}{HTML}{FFFFFF}
