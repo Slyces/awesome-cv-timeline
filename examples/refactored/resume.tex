@@ -7,6 +7,8 @@
 % ------------------------------------------------------------------------------
 \documentclass[11pt, a4paper]{../../resume}
 
+\usepackage{mdframed}
+
 % Enable to see border on tables and other layout indicators
 \setbool{debugmode}{true}
 
@@ -60,31 +62,50 @@
 \end{cvsummary}
 
 % ------------------------------------------------------------------------------
+% Page 1
 
+% Set lengths for the whole document
 \setlength{\iconswidth}{10.7pt}
 \setlength{\headersmargin}{-0.2cm}
+
+% Set lenghts for the first page (double column layout)
 \setlength{\leftcolumnwidth}{5cm}
 \setlength{\columnsmargin}{0.5\sidemargin}
 \setlength{\timelinemargin}{0.5cm}
 
-% Draw the timeline starting from section B
+\mdfsetup{%
+    % Border style
+    linecolor=awesome,
+    linewidth=1.2pt,
+    % Margins
+    innerleftmargin=0pt,
+    innerrightmargin=0pt,
+    innertopmargin=0pt,
+    innerbottommargin=0pt,
+}
+
+% Draw the timeline for experience & education (4th & 5th sections)
 \timeline{D,E}
 
 \begin{textblock*}{\leftcolumnwidth}(0pt, \headersmargin)
-    \vspace{-2mm}
-    \input{sections/contact.tex}
-    \vspace{0mm}
-    \input{sections/skills.tex}
-    \vspace{3.5mm}
-    \input{sections/hobbies.tex}
+    \begin{mdframed}
+        \vspace{-2mm}
+        \input{sections/contact.tex}
+        \vspace{0mm}
+        \input{sections/skills.tex}
+        \vspace{3.5mm}
+        \input{sections/hobbies.tex}
+    \end{mdframed}
 \end{textblock*}
 
 \begin{textblock*}
     {\paperwidth - 2\sidemargin - \leftcolumnwidth - \columnsmargin - 2\timelinemargin}
     (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, \headersmargin)
-    \vspace{-2mm}
-    \input{sections/experience.tex}
-    \input{sections/education.tex}
+    \begin{mdframed}
+        \vspace{-2mm}
+        \input{sections/experience.tex}
+        \input{sections/education.tex}
+    \end{mdframed}
 \end{textblock*}
 
 \newpage
@@ -95,9 +116,11 @@
 \begin{textblock*}
     {\paperwidth - 2\sidemargin - \leftcolumnwidth - \columnsmargin - 2\timelinemargin}
     (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, \headersmargin)
-    \vspace{-2mm}
-    \input{sections/projects.tex}
-    \input{sections/selected-publications.tex}
+    \begin{mdframed}
+        \vspace{-2mm}
+        \input{sections/projects.tex}
+        \input{sections/selected-publications.tex}
+    \end{mdframed}
 \end{textblock*}
 
 \newpage
@@ -105,7 +128,9 @@
 
 \newgeometry{left=3\columnsmargin, top=1.5cm, right=\sidemargin, bottom=2cm, footskip=.5cm}
 % \timeline{H}
+\begin{mdframed}
 \input{sections/publications.tex}
+\end{mdframed}
 
 
 \end{document}
