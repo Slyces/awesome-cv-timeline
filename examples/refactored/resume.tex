@@ -67,8 +67,8 @@
 
 % Set lenghts for the first page (double column layout)
 \setlength{\leftcolumnwidth}{5cm}
-\setlength{\columnsmargin}{0.5\sidemargin}
-\setlength{\timelinemargin}{0.5cm}
+\setlength{\leftcolumnrightmargin}{0cm}
+\setlength{\timelinemargin}{0.4cm}
 
 % Draw the timeline for experience & education (4th & 5th sections)
 \timeline{D,E}
@@ -82,8 +82,8 @@
 \end{textblock*}
 
 \begin{textblock*}
-    {\paperwidth - 2\sidemargin - \leftcolumnwidth - \columnsmargin - 2\timelinemargin}
-    (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, 0pt)
+    {\paperwidth - 2\sidemargin - \leftcolumnwidth - \leftcolumnrightmargin - 2\timelinemargin}
+    (\leftcolumnwidth + \leftcolumnrightmargin + 2\timelinemargin, 0pt)
     \begin{mdframed}
         \input{sections/experience.tex}
         \input{sections/education.tex}
@@ -91,15 +91,15 @@
 \end{textblock*}
 
 \newpage
-\setlength{\leftcolumnwidth}{-\columnsmargin}
+\setlength{\leftcolumnwidth}{-\leftcolumnrightmargin}
 
 % ------------------------------------------------------------------------------
 % Page 2
 \timeline{F,G} % H,I,J,L,...
 
 \begin{textblock*}
-    {\paperwidth - 2\sidemargin - \leftcolumnwidth - \columnsmargin - 2\timelinemargin}
-    (\leftcolumnwidth + \columnsmargin + 2\timelinemargin, 0pt)
+    {\paperwidth - 2\sidemargin - \leftcolumnwidth - \leftcolumnrightmargin - 2\timelinemargin}
+    (\leftcolumnwidth + \leftcolumnrightmargin + 2\timelinemargin, 0pt)
     \begin{mdframed}
         \vspace{-2mm}
         \input{sections/projects.tex}
@@ -110,7 +110,7 @@
 \newpage
 \setlength{\leftcolumnwidth}{-\timelinemargin}
 
-\newgeometry{left=3\columnsmargin, top=1.5cm, right=\sidemargin, bottom=2cm, footskip=.5cm}
+\newgeometry{left=3\leftcolumnrightmargin, top=1.5cm, right=\sidemargin, bottom=2cm, footskip=.5cm}
 % \timeline{H}
 \begin{mdframed}
 \input{sections/publications.tex}

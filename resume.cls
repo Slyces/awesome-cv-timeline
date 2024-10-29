@@ -155,20 +155,21 @@
 
 % Sidebar & Timeline
 % --------------------------------------
-% Create a length for the side margins (required for tikz)
+% Create a length for the side margins (required for tikz absolute positioning)
 \newlength{\sidemargin}
 
-% Width of the left sidebar
-\newlength{\sidebarwidth}
+% Width of the left column
+\newlength{\leftcolumnwidth}
 
-% Margin around the timeline (between sidebar and body)
+% Margin between the left column and the start of the timeline
+\newlength{\leftcolumnrightmargin}
+
+% Margin on the side of the timeline (left & right)
 \newlength{\timelinemargin}
 
-% TDB
-\newlength{\leftcolumnwidth}
-\newlength{\columnsmargin}
-
 % Width dedicated to date & location for cv entries
+% TODO: not used right now, might be needed for resumes with long job title or
+% companies
 \newlength{\datelocationwidth}
 \setlength{\datelocationwidth}{3cm}
 
@@ -1103,8 +1104,7 @@
 
 % Command for the x-shift of labels. This decides the horizontal position of
 % the timeline.
-%\newcommand{\tikzposxshift}{\sidemargin + \sidebarwidth + \timelinemargin}
-\newcommand{\tikzposxshift}{\sidemargin + \leftcolumnwidth + \columnsmargin + \timelinemargin}
+\newcommand{\tikzposxshift}{\sidemargin + \leftcolumnwidth + \leftcolumnrightmargin + \timelinemargin}
 
 % Coordinates per type of node
 % --------------------------------------
