@@ -602,7 +602,7 @@
 \newcommand{\headernamedelim}{\space}
 
 % Define a header for CV
-% Usage: \makecvheader{<align-char>}
+% Usage: \makecvheader{<align-char>} (options: L | C | R)
 \newcommand*{\makecvheader}[1][C]{%
     % Draw the photo (if defined)
     \newcommand*{\drawphoto}{%
@@ -663,6 +663,23 @@
         % Handle text alignment (options: L | C | R)
         \ifthenelse{\equal{#1}{L}}{
             % Argument #1 <align-char> is 'L'
+            \begin{flushleft}
+        }{\ifthenelse{\equal{#1}{R}}{
+            % Argument #1 <align-char> is 'R'
+            \begin{flushright}
+        }{
+            % Argument #1 <align-char> is anything else (includes empty)
+            \begin{center}
+        }}
+
+        % Text with 'firstname <sep> lastname'
+        \headerfirstnamestyle{\@firstname}%
+        \headerlastnamestyle{{}\space\@lastname}%
+        \\[\headerinterskip]
+
+        % Handle text alignment (options: L | C | R)
+        \ifthenelse{\equal{#1}{L}}{
+            % Argument #1 <align-char> is 'L'
             \raggedright
         }{\ifthenelse{\equal{#1}{R}}{
             % Argument #1 <align-char> is 'R'
@@ -672,16 +689,23 @@
             \centering
         }}
 
-        % Text with 'firstname <sep> lastname'
-        \headerfirstnamestyle{\@firstname}%
-        \headerlastnamestyle{{}\space\@lastname}%
-        \\[\headerinterskip]%
-
         % Position text (if defined)
-        \ifthenelse{\isundefined{\@position}}{}{%
+        \ifthenelse{\isundefined{\@position}}{}{
             % Position => inter-skip, position, after skip
-            \headerpositionstyle{\@position}%
-        }%
+            \headerpositionstyle{\@position}
+        }
+
+        % Handle text alignment (options: L | C | R)
+        \ifthenelse{\equal{#1}{L}}{
+            % Argument #1 <align-char> is 'L'
+            \end{flushleft}
+        }{\ifthenelse{\equal{#1}{R}}{
+            % Argument #1 <align-char> is 'R'
+            \end{flushright}
+        }{
+            % Argument #1 <align-char> is anything else (includes empty)
+            \end{center}
+        }}
         \end{debugframe}
     \end{minipage}%
     % Minipage for right-side photo
