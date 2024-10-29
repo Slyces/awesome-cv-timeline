@@ -219,8 +219,17 @@
 % Create commands for conditional code depending on debug mode
 \newcommand{\debug}[2]{\ifbool{debugmode}{#1}{#2}}
 
+\newenvironment{debugframe}{
+    \debug{\begin{mdframed}}{}%
+}{
+    \debug{\end{mdframed}}{}%
+}
+
 \newcommand{\setupdebug}{\debug{
+    % Needed for debugging base layout (margins, footer, ...)
     \RequirePackage{showframe}
+    % Needed for debugging resume layout (header, columns, ...)
+    \RequirePackage{mdframed}
 
     % Configuration for debug frames
     \mdfsetup{%
@@ -638,19 +647,19 @@
     \setlength{\headertextwidth}{\textwidth - \headerphotowidth}
 
     % Create minipages to show the photo & text side-by-side
-    \begin{mdframed}
+    \begin{debugframe}
     \vspace{\headerbeforeskip}
     % Minipage for left-side photo
     \ifthenelse{\equal{\@photoalign}{left}}{
         \begin{minipage}[c]{\headerphotowidth}%
-            \begin{mdframed}
+            \begin{debugframe}
             \raggedright\drawphoto%
-            \end{mdframed}
+            \end{debugframe}
         \end{minipage}%
     }{}%
     % Minipage for text
     \begin{minipage}[c]{\headertextwidth}
-        \begin{mdframed}
+        \begin{debugframe}
         % Handle text alignment (options: L | C | R)
         \ifthenelse{\equal{#1}{L}}{
             % Argument #1 <align-char> is 'L'
@@ -673,18 +682,18 @@
             % Position => inter-skip, position, after skip
             \headerpositionstyle{\@position}%
         }%
-        \end{mdframed}
+        \end{debugframe}
     \end{minipage}%
     % Minipage for right-side photo
     \ifthenelse{\equal{\@photoalign}{right}}{%
         \begin{minipage}[c]{\headerphotowidth}%
-            \begin{mdframed}
+            \begin{debugframe}
             \raggedright\drawphoto%
-            \end{mdframed}
+            \end{debugframe}
         \end{minipage}
     }{}%
     \vspace{\headerafterskip}
-    \end{mdframed}
+    \end{debugframe}
 }
 
 % Summary

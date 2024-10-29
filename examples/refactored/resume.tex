@@ -7,8 +7,6 @@
 % ------------------------------------------------------------------------------
 \documentclass[11pt, a4paper]{../../resume}
 
-\usepackage{mdframed}
-
 % Enable to see border on tables and other layout indicators
 \setbool{debugmode}{true}
 
@@ -74,21 +72,21 @@
 
 % Textblock for the left column
 \begin{textblock*}{\leftcolumnwidth}(0pt, 0pt)
-    \begin{mdframed}
+    \begin{debugframe}
         \input{sections/contact.tex}
         \input{sections/skills.tex}
         \input{sections/hobbies.tex}
-    \end{mdframed}
+    \end{debugframe}
 \end{textblock*}
 
 % Textblock for the main body (right column)
 \begin{textblock*}
     {\textwidth - \leftcolumnwidth - \leftcolumnrightmargin - 2\timelinemargin}
     (\leftcolumnwidth + \leftcolumnrightmargin + 2\timelinemargin, 0pt)
-    \begin{mdframed}
+    \begin{debugframe}
         \input{sections/experience.tex}
         \input{sections/education.tex}
-    \end{mdframed}
+    \end{debugframe}
 \end{textblock*}
 
 % New page
@@ -102,18 +100,18 @@
 
 % Shift the content to the right to have space for the timeline
 \begin{textblock*}{\textwidth - 2\timelinemargin}(2\timelinemargin, 0pt)
-    \begin{mdframed}
+    \begin{debugframe}
         \input{sections/projects.tex}
         \input{sections/selected-publications.tex}
-    \end{mdframed}
+    \end{debugframe}
 \end{textblock*}
 
 \newpage
 
 % No timeline for full publications
-\begin{mdframed}
+\begin{debugframe}
 \input{sections/publications.tex}
-\end{mdframed}
+\end{debugframe}
 
 
 \end{document}
