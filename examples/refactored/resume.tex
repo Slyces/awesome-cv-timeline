@@ -13,8 +13,7 @@
 \setbool{debugmode}{true}
 
 % Configure page margins with geometry
-\setlength{\sidemargin}{1.5cm}
-\geometry{left=\sidemargin, top=1.5cm, right=\sidemargin, bottom=2cm, footskip=.5cm}
+\geometry{left=1.5cm, top=1.5cm, right=1.5cm, bottom=2cm, footskip=.5cm}
 
 % Color for highlights
 \colorlet{awesome}{awesome-darkblue}
@@ -22,6 +21,9 @@
 % Add multiple .bib files
 \addbibresource{bibliographies/papers-chapters.bib}
 \addbibresource{bibliographies/patents.bib}
+
+% Set lenghts for the whole document
+\renewcommand{\sectioninterskip}{2mm}
 
 % Header & Contacts Information
 % --------------------------------------
@@ -60,10 +62,7 @@
 \end{cvsummary}
 
 % ------------------------------------------------------------------------------
-% Page 1
-
-% Set lengths for the whole document
-\setlength{\iconswidth}{10.7pt}
+% Page 1 - Dual column layout
 
 % Set lenghts for the first page (double column layout)
 \setlength{\leftcolumnwidth}{5cm}
@@ -73,6 +72,7 @@
 % Draw the timeline for experience & education (4th & 5th sections)
 \timeline{D,E}
 
+% Textblock for the left column
 \begin{textblock*}{\leftcolumnwidth}(0pt, 0pt)
     \begin{mdframed}
         \input{sections/contact.tex}
@@ -81,8 +81,9 @@
     \end{mdframed}
 \end{textblock*}
 
+% Textblock for the main body (right column)
 \begin{textblock*}
-    {\paperwidth - 2\sidemargin - \leftcolumnwidth - \leftcolumnrightmargin - 2\timelinemargin}
+    {\textwidth - \leftcolumnwidth - \leftcolumnrightmargin - 2\timelinemargin}
     (\leftcolumnwidth + \leftcolumnrightmargin + 2\timelinemargin, 0pt)
     \begin{mdframed}
         \input{sections/experience.tex}
@@ -90,28 +91,26 @@
     \end{mdframed}
 \end{textblock*}
 
+% New page
 \newpage
-\setlength{\leftcolumnwidth}{-\leftcolumnrightmargin}
 
-% ------------------------------------------------------------------------------
-% Page 2
-\timeline{F,G} % H,I,J,L,...
+% Set the left column lengths to draw the timeline on the left
+\setlength{\leftcolumnwidth}{0pt}
 
-\begin{textblock*}
-    {\paperwidth - 2\sidemargin - \leftcolumnwidth - \leftcolumnrightmargin - 2\timelinemargin}
-    (\leftcolumnwidth + \leftcolumnrightmargin + 2\timelinemargin, 0pt)
+% Draw the timeline for projects & selected publications (6th & 7th sections)
+\timeline{F,G}
+
+% Shift the content to the right to have space for the timeline
+\begin{textblock*}{\textwidth - 2\timelinemargin}(2\timelinemargin, 0pt)
     \begin{mdframed}
-        \vspace{-2mm}
         \input{sections/projects.tex}
         \input{sections/selected-publications.tex}
     \end{mdframed}
 \end{textblock*}
 
 \newpage
-\setlength{\leftcolumnwidth}{-\timelinemargin}
 
-\newgeometry{left=3\leftcolumnrightmargin, top=1.5cm, right=\sidemargin, bottom=2cm, footskip=.5cm}
-% \timeline{H}
+% No timeline for full publications
 \begin{mdframed}
 \input{sections/publications.tex}
 \end{mdframed}

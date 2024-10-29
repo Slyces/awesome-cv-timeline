@@ -127,6 +127,37 @@
 % lengths that can be manipulated arithmically
 % (e.g. 1\textwidth - 2\iconswidth)
 
+% ┌───────────────────────────────────────────────────────────────────────────┐
+% │                                                                           │
+% │    ┌ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ┐    │
+% │      ↕ \headerbeforeskip                                                  │
+% │    │<---------> \headerphotowidth                                    │    │
+% │     ┌─────────┐                                                           │
+% │    ││         │┌────────────────────────────────────────────────────┐│    │
+% │     │         ││                    Name Surname                    │     │
+% │    ││ picture ││↕ \headerinterskip                                  ││    │
+% │     │         ││             job title - specialisation             │     │
+% │    ││         │└────────────────────────────────────────────────────┘│    │
+% │     └─────────┘                                                           │
+% │    │ ↕ \headerafterskip                                              │    │
+% │     ┌───────────────────────────────────────────────────────────────┐     │
+% │    ││ Summary                                                       ││    │
+% │     └───────────────────────────────────────────────────────────────┘     │
+% │    │ ↕ \summaryafterskip                                             │    │
+% │     <-------------> \leftcolumnwidth                                      │
+% │    │               <---> \leftcolumnrightmargin                      │    │
+% │     ╔══════════════╔═══╦═════╗══════════════════════════════════════╗     │
+% │    │║Contact       ║   ║  ●  ║Experience                            ║│    │
+% │     ║              ║   ║  │  ║↕ \sectioninterskip                   ║     │
+% │    │║ϟ     ~~~~~~~~║   ║  ○  ║Company                       Location║│    │
+% │     ║ϟ       ~~~~~~║   ║  │  ║Job Title                 start - stop║     │
+% │    │║ϟ     ~~~~~~~~║   ║  │  ║• ~~~~~~~~~~~~~         <------------>║│    │
+% │     ║ϟ ~~~~  ϟ ~~~~║   ║  │  ║ • ~~~~~~~~~        \datelocationwidth║     │
+% │    │║              ║   ║     ║↕ \sectionafterskip                   ║│    │
+% │     ║Skills        ║   ║  ●  ║Experience                            ║     │
+% │    │║              ║   ║  │  ║                                      ║│    │
+% │     ║                  <-> <-> \timelinemargin                      ║     │
+
 % Header
 % --------------------------------------
 % Before header
@@ -148,7 +179,7 @@
 % Sections & Entries
 % --------------------------------------
 % Between section title and content
-\newcommand{\sectioncontentbeforeskip}{1.5mm}
+\newcommand{\sectioninterskip}{1.5mm}
 
 % After the end of the whole section's content
 \newcommand{\sectionafterskip}{0mm}
@@ -176,8 +207,8 @@
 
 % Icons (contacts & hobbies)
 % --------------------------------------
-\newlength{\iconswidth}
-\setlength{\iconswidth}{9pt}
+\newlength{\iconswidth}  % Not used if you use \tabularx
+\setlength{\iconswidth}{10.7pt}
 
 % Debug commands
 % --------------------------------------
@@ -213,7 +244,7 @@
 % Layout
 % --------------------------------------
 % Configure page margins with geometry
-\geometry{left=2.0cm, top=1.5cm, right=2.0cm, bottom=2.0cm, footskip=.5cm}
+\geometry{left=1.5cm, top=1.5cm, right=1.5cm, bottom=2cm, footskip=.5cm}
 
 % Set offset to each header and footer
 \fancyhfoffset{0em}
@@ -894,7 +925,7 @@
 % Usage: \cvsubsection{<subsection-title>}
 \newcommand{\cvsubsection}[1]{%
     % TODO: troubleshoot when used
-    \vspace{\sectioncontentbeforeskip}
+    \vspace{\sectioninterskip}
     \vspace{-3mm}
     \subsectionstyle{#1}
     \phantomsection
@@ -995,7 +1026,7 @@
 % Paragraph
 % - - - - - - - - - - - - - - - - - - -
 \newenvironment{cvparagraph}{%
-    \vspace{\sectioncontentbeforeskip}
+    \vspace{\sectioninterskip}
     \vspace{-3mm}
     \paragraphstyle
 }{%
@@ -1010,7 +1041,7 @@
 \newenvironment{cventries}[1][]{%
     % Make sure that you can set a title/separator for the current entry-list
     \raggedright\entrytitlestyle{#1}
-    \vspace{\sectioncontentbeforeskip}
+    \vspace{\sectioninterskip}
     \begin{center}
 }{%
     % Save the position of the end of section as 'A1-end' in the aux file
@@ -1104,7 +1135,10 @@
 
 % Command for the x-shift of labels. This decides the horizontal position of
 % the timeline.
-\newcommand{\tikzposxshift}{\sidemargin + \leftcolumnwidth + \leftcolumnrightmargin + \timelinemargin}
+\newcommand{\tikzposxshift}{%
+    \evensidemargin + 1in  % https://tex.stackexchange.com/a/101861
+    + \leftcolumnwidth + \leftcolumnrightmargin + \timelinemargin%
+}
 
 % Coordinates per type of node
 % --------------------------------------
