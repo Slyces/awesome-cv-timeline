@@ -1,2 +1,5 @@
+# Ignore all build folders
 build/
-output/
+
+# Some example of folders to have your private files
+private/

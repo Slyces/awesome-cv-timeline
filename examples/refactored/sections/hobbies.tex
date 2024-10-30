@@ -1,0 +1,31 @@
+%----------------------------------------------------------------------------------------
+%	HOBBIES
+%----------------------------------------------------------------------------------------
+
+\cvsection{Hobbies}
+
+{
+% Reduce horizontal space around cells content
+\setlength{\tabcolsep}{2pt}
+\debug{
+    % In debug mode, add vertical separator between columns
+    \begin{tabularx}{\textwidth}
+        {|c|>{\raggedleft\arraybackslash}X|}
+}{
+    \begin{tabularx}{\textwidth}
+        {c>{\raggedleft\arraybackslash}X}
+}
+    \debug{\hline}{}
+    \hobbiesiconstyle{\icon{\faMap}} & \strut\hobbiesstyle{Navigation}\\
+    \debug{\hline}{}
+    \hobbiesiconstyle{\icon{\faBomb}} & \strut\hobbiesstyle{Explosives}\\
+    \debug{\hline}{}
+    \hobbiesiconstyle{\icon{\faBitcoin}} &
+        \strut\hobbiesstyle{Treasure hunting}\\
+    \debug{\hline}{}
+    \hobbiesiconstyle{\icon{\faShip}} & \strut\hobbiesstyle{Sailing}\\
+    \debug{\hline}{}
+    \hobbiesiconstyle{\icon{\faSwimmer}} & \strut\hobbiesstyle{Swimming}\\
+    \debug{\hline}{}
+\end{tabularx}
+}

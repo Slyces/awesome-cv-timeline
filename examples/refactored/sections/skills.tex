@@ -1,0 +1,49 @@
+
+\cvsection{Skills}
+
+% ------------------------------------------------
+\skillcategory{Tools}
+
+\begin{skillstable}
+    \skill{Compass}\skill{Cutlass}\skill{Flintlock}\\[3pt]
+    \skill{Rum}\skill{Maps}\skill{Spyglass}
+\end{skillstable}
+
+% ------------------------------------------------
+\skillcategory{Knots}
+
+\begin{skillstable}
+    \skill{Bowline}\skill{Figure-Eight}\skill{Clove Hitch}\\[3pt]
+    \skill{Sheet Bend}\skill{Wake knot}
+\end{skillstable}
+
+% ------------------------------------------------
+\skillcategory{Favorite Animals}
+
+\begin{skillstable}
+    \skill{Python}\skill{Shark}\skill{\textsc{Monkey}}
+\end{skillstable}
+
+% ------------------------------------------------
+\skillcategory{Languages}
+
+{
+% Reduce horizontal space around cells content
+\setlength{\tabcolsep}{2pt}
+\debug{
+    % In debug mode, add vertical separator between columns
+    \begin{tabularx}{\textwidth}
+        {|c|>{\raggedleft\arraybackslash}X|}
+}{
+    \begin{tabularx}{\textwidth}
+        {c>{\raggedleft\arraybackslash}X}
+}
+    \debug{\hline}{}
+    \hobbiesstyle{Pirate} & \strut\hobbiesstyle{(Native)}\\
+    \debug{\hline}{}
+    \hobbiesstyle{Parrot} & \strut\hobbiesstyle{(Fluent)}\\
+    \debug{\hline}{}
+    \hobbiesstyle{Spanish} & \strut\hobbiesstyle{(Rudimentary)}\\
+    \debug{\hline}{}
+\end{tabularx}
+}

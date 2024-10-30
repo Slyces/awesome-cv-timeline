@@ -1,0 +1,120 @@
+% TEX program = xelatex
+% ------------------------------------------------------------------------------
+% Important note: this template must be compiled with XeLaTeX; the below lines
+% will ensure this
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+% ------------------------------------------------------------------------------
+\documentclass[11pt, a4paper]{../../resume}
+
+% Enable to see border on tables and other layout indicators
+\setbool{debugmode}{false}
+
+% Configure page margins with geometry
+\geometry{left=1.5cm, top=1.5cm, right=1.5cm, bottom=2cm, footskip=.5cm}
+
+% Color for highlights
+\colorlet{awesome}{awesome-darkblue}
+
+% Add multiple .bib files
+\addbibresource{bibliographies/papers-chapters.bib}
+\addbibresource{bibliographies/patents.bib}
+
+% Set lenghts for the whole document
+\renewcommand{\headerafterskip}{1mm}
+\renewcommand{\summaryafterskip}{1mm}
+\renewcommand{\sectioninterskip}{2mm}
+
+% Header & Contacts Information
+% --------------------------------------
+\name{Jack}{Sparrow}
+\position{Captain{\enskip\cdotp\enskip}Pirate{\enskip\cdotp\enskip}Coach}
+\photo[circle,edge,left]{images/jack.jpg}
+\setlength{\headerphotowidth}{3.8cm}
+
+\address{Port Tortuga, Caribbean Sea}
+\mobile{+1-800-SEABOUND}
+\email{pirateking@blackpearl.com}
+\github{jspgit}
+\linkedin{jacksparrow}
+\orcid{1701-0420-1720-0800}
+
+% Perform some setup for debugging displays
+\setupdebug
+
+% ------------------------------------------------------------------------------
+
+\begin{document}
+
+% The header is entirely defined by the definitions above
+\makecvheader[C]
+
+% Specify the letter footer with 3 arguments: (<left>, <center>, <right>), leave
+% any of these blank if they are not needed
+\makecvfooter{\thepage}{Jack Sparrow~~~·~~~Resume}{\today}
+
+% Short summary about yourself
+\begin{cvsummary}
+    To continue a life of adventure, sailing the high seas in search of
+    treasure, rum, and the occasional encounter with supernatural forces, while
+    maintaining the reputation as the most cunning and unpredictable pirate in
+    the Caribbean.
+\end{cvsummary}
+
+% ------------------------------------------------------------------------------
+% Page 1 - Dual column layout
+
+% Set lenghts for the first page (double column layout)
+\setlength{\leftcolumnwidth}{5cm}
+\setlength{\leftcolumnrightmargin}{0.5cm}
+\setlength{\timelinemargin}{0.4cm}
+
+% Draw the timeline for experience & education (4th & 5th sections)
+\timeline{D,E}
+
+% Textblock for the left column
+\begin{textblock*}{\leftcolumnwidth}(0pt, 0pt)
+    \begin{debugframe}
+        \input{sections/contact.tex}
+        \input{sections/skills.tex}
+        \input{sections/hobbies.tex}
+    \end{debugframe}
+\end{textblock*}
+
+% Textblock for the main body (right column)
+\begin{textblock*}
+    {\textwidth - \leftcolumnwidth - \leftcolumnrightmargin - 2\timelinemargin}
+    (\leftcolumnwidth + \leftcolumnrightmargin + 2\timelinemargin, 0pt)
+    \begin{debugframe}
+        \input{sections/experience.tex}
+        \input{sections/education.tex}
+    \end{debugframe}
+\end{textblock*}
+
+% New page
+\newpage
+
+% Set the left column lengths to draw the timeline on the left
+\setlength{\leftcolumnwidth}{0cm}
+\setlength{\leftcolumnrightmargin}{0cm}
+
+% Draw the timeline for projects & selected publications (6th & 7th sections)
+\timeline{F,G}
+
+% Shift the content to the right to have space for the timeline
+\begin{textblock*}{\textwidth - 2\timelinemargin}(2\timelinemargin, 0pt)
+    \begin{debugframe}
+        \input{sections/projects.tex}
+        \input{sections/selected-publications.tex}
+    \end{debugframe}
+\end{textblock*}
+
+\newpage
+
+% No timeline for full publications
+\begin{debugframe}
+\input{sections/publications.tex}
+\end{debugframe}
+
+
+\end{document}
