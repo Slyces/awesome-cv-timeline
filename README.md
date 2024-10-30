@@ -2,17 +2,31 @@
 
 Awesome-CV-Timeline is a latex resume template built on top of [awesome-cv](https://github.com/posquit0/Awesome-CV).
 
-Features:
-- Focus on the front page
-- Column layout
-  - [Right]: Experiences, education, projects
-  - [Left]: Personal info, skills, keywords
-  - Separator: simple timeline with emphasis on internal evolution
+📘 Features:
+- Modern look with a two-column layout
+  - _[Left]:_ Personal info, skills, keywords
+  - _[Right]:_ Experiences, education, projects
+  - _[Separator]:_ simple timeline with emphasis on chronology inside sections
+- Main content: sections with job title, company, date and location
+  - Detailed experience with bullet points
+- Clickable socials
+  - Github
+  - LinkedIn
+  - Email
+  - Address
+  - ORCID
+- Supports images
+- Supports multi-pages
+
 
 ## 📝 How does it look?
 
 Here's an example of the output:
-![resume-1](https://github.com/Slyces/resume/assets/22822015/532e6663-8bed-4b9f-bc7f-d74686b35d77)
+
+<div style="display: flex; justify-content: space-between;">
+  <img src="https://github.com/user-attachments/assets/a9fdf63d-8823-461c-8609-2550fae9d2d9" alt="Page 1" width="450"/>
+  <img src="https://github.com/user-attachments/assets/fb442fb0-2d27-48b8-878a-d74007add6ea" alt="Page 2" width="450"/>
+</div>
 
 ## ⚡️ Quick Start
 
@@ -37,13 +51,15 @@ If you find yourself wanting to change how things look, or you're interested in 
 
 ### <picture><source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/980f1923-2432-47c3-990d-33c269b56ab2"><img src="https://github.com/user-attachments/assets/53e4f075-5b98-486f-be00-6d2ebab13c9f" width="20"></picture> I am a <picture><source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/091d3468-c74b-42a5-9124-c33e17b864b9"><img src="https://github.com/user-attachments/assets/95f84d08-653b-4c00-9f7f-f48d004dd149" width="45"></picture> archwizard
 
-There is a single class file, `resume.cls` with some associated fonts in
-`fonts/`. You are welcome to edit this file directly, but if you manage to add
-the features that you'd like in a modular way (the `.cls` provides the
-functionality but it can be opt-in through the main tex file), I would welcome
-any contribution.
+Happy to have you here, please keep reading! I'll go into the details of
+advanced usage and how to make sure you can contribute the awesome improvements
+you will no doubt implement while playing with this template!
 
-## Versioning - How do I keep my data private
+The code heavily comments whatever can be to ensure that you can easily extend
+this template and question any given implementation detail if there is a better
+way. There is also **plenty** of diagrams in the code.
+
+## 🔒 Versioning - How do I keep my data private
 
 The main problem with resumes is that you usually don't want the source to be
 available to the public on github. So most people will just copy a template at
@@ -51,10 +67,10 @@ some point (in overleaf or a private git) and forget about the original
 repository.
 
 In this repository, I tried to provide a structure that allows you to work on
-your private data while keeping the upstream (this repository) to either pull in
-new features or push your contributions.
+your private data while keeping the upstream source (this repository) to either
+pull in new features or push your contributions.
 
-### I don't want upstream changes - Let me clone and never come again
+### 😶 I don't want upstream changes - Let me clone and never come again
 
 If you don't need any future improvement with the template or don't want to
 provide some yourself, you can just copy the main level code to a new private
@@ -80,7 +96,7 @@ Your structure should look something like this:
    └── skills.tex
 ```
 
-### I want to keep upstream updates - and I like git
+### 😌 I want to keep upstream updates - and I like git
 
 In order to keep compatibility with future upstream changes, you need to
 structure your resume in a folder, like so:
@@ -144,34 +160,67 @@ different languages)
 
 Try to keep the `Makefile` as a symlink so you have the same experience across different folders, and edit the main level one!
 
-### What if I need to change ...
+## 🔎 I want to edit the layout
 
-#### The `Makefile`
+Depending on the content of your resume, the existing layout might not look
+good. You might want more or less spacing here and there.
 
-The `Makefile` probably won't be perfect until a variety of people and machines
-try to run it. Your feedback is welcome, this is why I suggest to keep the
-`Makefile` as a symlink. You can either split off from the main `Makefile` (just
-copy the content) and fix your issues, or you can contribute a fix upstream.
+There are two tools provided to you to work on the layout.
 
-#### The `.cls`
+### The `debug` flag
 
-If you need to change the class file, it probably means one of two things:
+In your `resume.tex` you should have the following line:
+```
+% Enable to see border on tables and other layout indicators
+\setbool{debugmode}{true}
+```
 
-##### Existing functionalities are not flexible enough
+Once enabled, you should see boxes around stuff, like so:
 
-You found yourself wanting to do "what's currently here" slightly differently,
-but there was no configuration for it or the setting is not really accessible
-from the `resume.tex` file.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7f2be11a-c3f0-4b32-bd1a-75e3ce527d6e" alt="Page 1" width="500"/>
+</p>
 
-This means that we can probably improve the template by making this specific
-option configurable in each instance of the template. You can either contribute
-a solution or open an issue.
+This should help you figure out how different parameters impact the different
+components, although I advise you to always look at the production version of
+your document to know if it looks good.
 
-##### I want to do something new
+### The lengths diagram
 
-New features are great! If it's just adding a new functionality, we can include
-this in the initial template. If you're changing major elements, we could
-consider opening a branch with a different flavour of the template, or create
-different `.cls`, as long as the "client code" (the content of `resume.tex`) is
-identical between different branches/templates and one can keep the content but
-change the style.
+The template `resume.cls` has the following diagram to describe the different
+lengths available for you to edit (does not include regular latex lengths).
+
+```text
+% ┌───────────────────────────────────────────────────────────────────────────┐
+% │                                                                           │
+% │    ┌ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ┐    │
+% │      ↕ \headerbeforeskip                                                  │
+% │    │<---------> \headerphotowidth                                    │    │
+% │     ┌─────────┐                                                           │
+% │    ││         │┌────────────────────────────────────────────────────┐│    │
+% │     │         ││                    Name Surname                    │     │
+% │    ││ picture ││↕ \headerinterskip                                  ││    │
+% │     │         ││             job title - specialisation             │     │
+% │    ││         │└────────────────────────────────────────────────────┘│    │
+% │     └─────────┘                                                           │
+% │    │ ↕ \headerafterskip                                              │    │
+% │     ┌───────────────────────────────────────────────────────────────┐     │
+% │    ││ Summary                                                       ││    │
+% │     └───────────────────────────────────────────────────────────────┘     │
+% │    │ ↕ \summaryafterskip                                             │    │
+% │     <-------------> \leftcolumnwidth                                      │
+% │    │               <---> \leftcolumnrightmargin                      │    │
+% │     ╔══════════════╔═══╦═════╗══════════════════════════════════════╗     │
+% │    │║Contact       ║   ║  ●  ║Experience                            ║│    │
+% │     ║              ║   ║  │  ║↕ \sectioninterskip                   ║     │
+% │    │║ϟ     ~~~~~~~~║   ║  ○  ║Company                       Location║│    │
+% │     ║ϟ       ~~~~~~║   ║  │  ║Job Title                 start - stop║     │
+% │    │║ϟ     ~~~~~~~~║   ║  │  ║• ~~~~~~~~~~~~~         <------------>║│    │
+% │     ║ϟ ~~~~  ϟ ~~~~║   ║  │  ║ • ~~~~~~~~~        \datelocationwidth║     │
+% │    │║              ║   ║     ║↕ \sectionafterskip                   ║│    │
+% │     ║Skills        ║   ║  ●  ║Experience                            ║     │
+% │    │║              ║   ║  │  ║                                      ║│    │
+% │     ║                  <-> <-> \timelinemargin                      ║     │
+```
+Eventually this could be combined with the previous debug flag to show them live
+on top of actual document you're working with.
