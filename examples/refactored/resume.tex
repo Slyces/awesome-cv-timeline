@@ -21,6 +21,8 @@
 \addbibresource{bibliographies/patents.bib}
 
 % Set lenghts for the whole document
+\renewcommand{\headerafterskip}{1mm}
+\renewcommand{\summaryafterskip}{1mm}
 \renewcommand{\sectioninterskip}{2mm}
 
 % Header & Contacts Information
@@ -64,7 +66,7 @@
 
 % Set lenghts for the first page (double column layout)
 \setlength{\leftcolumnwidth}{5cm}
-\setlength{\leftcolumnrightmargin}{0cm}
+\setlength{\leftcolumnrightmargin}{0.5cm}
 \setlength{\timelinemargin}{0.4cm}
 
 % Draw the timeline for experience & education (4th & 5th sections)
@@ -93,7 +95,8 @@
 \newpage
 
 % Set the left column lengths to draw the timeline on the left
-\setlength{\leftcolumnwidth}{0pt}
+\setlength{\leftcolumnwidth}{0cm}
+\setlength{\leftcolumnrightmargin}{0cm}
 
 % Draw the timeline for projects & selected publications (6th & 7th sections)
 \timeline{F,G}

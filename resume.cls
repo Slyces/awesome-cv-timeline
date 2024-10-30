@@ -628,6 +628,7 @@
                     fill overzoom image=\@photo
                 ] () {};
             \end{tikzpicture}
+
         }%
     }
 
@@ -712,7 +713,7 @@
     \ifthenelse{\equal{\@photoalign}{right}}{%
         \begin{minipage}[c]{\headerphotowidth}%
             \begin{debugframe}
-            \raggedright\drawphoto%
+            \raggedleft\drawphoto%
             \end{debugframe}
         \end{minipage}
     }{}%
@@ -928,7 +929,7 @@
     % TODO: unify lengths
     \vspace{-0.3mm}
 }{
-    \vspace{-2.0mm}
+    \vspace{-1.0mm}
 }
 
 % Entries Titles
