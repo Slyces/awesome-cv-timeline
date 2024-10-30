@@ -24,8 +24,8 @@ Awesome-CV-Timeline is a latex resume template built on top of [awesome-cv](http
 Here's an example of the output:
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="https://github.com/user-attachments/assets/a9fdf63d-8823-461c-8609-2550fae9d2d9" alt="Page 1" width="450"/>
-  <img src="https://github.com/user-attachments/assets/fb442fb0-2d27-48b8-878a-d74007add6ea" alt="Page 2" width="450"/>
+  <img src="https://github.com/user-attachments/assets/a9fdf63d-8823-461c-8609-2550fae9d2d9" alt="Page 1" width="400"/>
+  <img src="https://github.com/user-attachments/assets/fb442fb0-2d27-48b8-878a-d74007add6ea" alt="Page 2" width="400"/>
 </div>
 
 ## ⚡️ Quick Start
