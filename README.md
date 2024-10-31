@@ -35,7 +35,7 @@ Here's an example of the output:
 
 ```bash
 git clone https://github.com/slyces/awesome-cv-timeline resume && cd resume
-cp -r examples/single-page private    # Copy the example
+cp -r examples/multi-pages private    # Copy the example
 cd private                            # Go in the folder
 make build                            # Build the example (using latexmk)
 open build/resume.pdf                 # Look at the output
