@@ -4,6 +4,8 @@ all: build
 # Environment Variables
 BUILD_DIR ?= build/  ## Directory for build files (pdf, artifacts)
 LATEX_FILE ?= resume.tex  ## Main LaTeX file
+TEXMFHOME := $(shell kpsewhich -var-value=TEXMFHOME)
+INSTALL_DIR := $(TEXMFHOME)/tex/luatex/local
 
 # Latexmk Configuration
 
@@ -32,6 +34,11 @@ preview: $(LATEX_FILE)  ## Builds the resume with preview and reload options
 .PHONY: clean
 clean:  ## Cleans up build files
 	latexmk -CA -outdir=$(BUILD_DIR) $(LATEX_FILE)
+
+.PHONY: install
+install:  ## Copies .cls to `TEXMFHOME`
+	@mkdir -p $(INSTALL_DIR)
+	cp resume.cls $(INSTALL_DIR)/resume.cls
 
 # ------------------------------------------------------------------------------
 # Help - Documentation
