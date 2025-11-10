@@ -322,6 +322,7 @@
 
 % Set font for header (default is Roboto)
 \newfontfamily\headerfont[
+  Path = fonts/,
   UprightFont=*-Regular,
   ItalicFont=*-Italic,
   BoldFont=*-Bold,
@@ -329,6 +330,7 @@
 ]{Roboto}
 
 \newfontfamily\headerfontlight[
+  Path = fonts/,
   UprightFont=*-Thin,
   ItalicFont=*-ThinItalic,
   BoldFont=*-Medium,
@@ -338,6 +340,7 @@
 % Provides additional symbols, browse at
 % https://www.nerdfonts.com/cheat-sheet
 \newfontfamily{\symbolsfont}[
+  Path = fonts/,
   UprightFont=*-Regular,
   Extension=.ttf
 ]{SymbolsNerdFont}
